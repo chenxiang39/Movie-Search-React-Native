@@ -46,6 +46,9 @@ export default  home = ({navigation}) => {
           SettopCarouselData(movieTopCarousel(data));
           Setloading(false);
         }
+        else{
+
+        }
       }catch(e){
         alert(e);
       }
@@ -76,6 +79,7 @@ export default  home = ({navigation}) => {
           }
         >
             <Text style = {[styles.blackbold,styles.title]}>USC Films</Text>
+            <Text style = {[styles.blackbold,styles.topCarouselTitle]}>{isMovie?'Now Playing':'Trending'}</Text>
             <Carousel data = {topCarouselData} sliderWidth = {0.92 * deviceWidth} itemWidth = {0.92 * deviceWidth}></Carousel>
         </Animated.ScrollView>
       )
@@ -90,7 +94,12 @@ const styles = StyleSheet.create({
 
   },
   title:{
-    fontSize:26
+    fontSize:30
+  },
+  topCarouselTitle:{
+    fontSize:22,
+    marginTop:'3%',
+    marginBottom:'4%'
   },
   blackbold:{
     color:'black',

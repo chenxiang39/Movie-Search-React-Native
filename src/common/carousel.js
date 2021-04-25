@@ -6,16 +6,19 @@ export default carousel = (props) => {
         return (
             <TouchableOpacity>
                 <Image style={styles.bigPic} source = {{uri:item.backdrop_path}} />
+                <Image style={[styles.smallPic, {width:200}]} source = {{uri:item.backdrop_path}} />
             </TouchableOpacity>
         )
     }
     return (
             <Carousel
-              ref={(c) => { this._carousel = c; }}
               data={props.data}
               renderItem={this.renderItem}
               sliderWidth={props.sliderWidth}
               itemWidth={props.itemWidth}
+              lockScrollWhileSnapping={true}
+              inactiveSlideScale= {1}
+              loop={true}
               autoplay={true}
             />
     )
@@ -25,4 +28,7 @@ const styles = StyleSheet.create({
     bigPic: {
         height:300
     },
+    smallPic:{
+        height:300
+    }
 });
