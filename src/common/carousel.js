@@ -1,12 +1,17 @@
 import * as React from 'react';
 import Carousel from 'react-native-snap-carousel';
-import { View, Text, Image,TouchableOpacity,StyleSheet} from 'react-native';
+import { View, Text, Image,ImageBackground,TouchableOpacity,StyleSheet} from 'react-native';
 export default carousel = (props) => {
+    const ClickFun = (item) =>{
+        alert(item.type);
+    }
     renderItem = ({item,index}) =>{
         return (
-            <TouchableOpacity>
-                <Image style={styles.bigPic} source = {{uri:item.backdrop_path}} />
-                <Image style={[styles.smallPic, {width:200}]} source = {{uri:item.backdrop_path}} />
+            <TouchableOpacity onPress = {ClickFun}>
+                <View style={styles.container}>
+                    <ImageBackground style={styles.pic} blurRadius={8} source = {{uri:item.backdrop_path}} />
+                    <Image style={[styles.pic,styles.small]} source = {{uri:item.backdrop_path}} /> 
+                </View>
             </TouchableOpacity>
         )
     }
@@ -25,10 +30,18 @@ export default carousel = (props) => {
 }
 
 const styles = StyleSheet.create({
-    bigPic: {
-        height:300
+    container:{
+        display:'flex',
+        flexDirection:'column',
     },
-    smallPic:{
-        height:300
+    pic: {
+        height:300,
+    },
+    small:{
+        display:'flex',
+        alignSelf:'center',
+        width:220,
+        position:'relative',
+        top:-300
     }
 });

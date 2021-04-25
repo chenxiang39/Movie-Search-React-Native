@@ -80,7 +80,7 @@ export default  home = ({navigation}) => {
         >
             <Text style = {[styles.blackbold,styles.title]}>USC Films</Text>
             <Text style = {[styles.blackbold,styles.topCarouselTitle]}>{isMovie?'Now Playing':'Trending'}</Text>
-            <Carousel data = {topCarouselData} sliderWidth = {0.92 * deviceWidth} itemWidth = {0.92 * deviceWidth}></Carousel>
+            <Carousel data = {topCarouselData} navigation = {navigation} sliderWidth = {0.92 * deviceWidth} itemWidth = {0.92 * deviceWidth}></Carousel>
         </Animated.ScrollView>
       )
     }
