@@ -3,11 +3,14 @@ import Carousel from 'react-native-snap-carousel';
 import { View, Text, Image,ImageBackground,TouchableOpacity,StyleSheet} from 'react-native';
 export default carousel = (props) => {
     const ClickFun = (item) =>{
-        alert(item.type);
+        props.navigation.navigate('Details',{
+            id:item.id,
+            type:item.type
+        })
     }
     renderItem = ({item,index}) =>{
         return (
-            <TouchableOpacity onPress = {ClickFun}>
+            <TouchableOpacity onPress = {()=>ClickFun(item)}>
                 <View style={styles.container}>
                     <ImageBackground style={styles.pic} blurRadius={8} source = {{uri:item.backdrop_path}} />
                     <Image style={[styles.pic,styles.small]} source = {{uri:item.backdrop_path}} /> 
