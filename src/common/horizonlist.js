@@ -1,5 +1,11 @@
 import * as React from 'react';
-import Carousel from 'react-native-snap-carousel';
+import {
+    Menu,
+    MenuOptions,
+    MenuOption,
+    MenuTrigger,
+    MenuProvider,
+} from 'react-native-popup-menu';
 import { View, Text, Image,ImageBackground,TouchableOpacity,StyleSheet, FlatList} from 'react-native';
 import {Dimensions} from 'react-native';
 global.deviceWidth = Dimensions.get('window').width
