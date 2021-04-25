@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     small:{
         display:'flex',
         alignSelf:'center',
-        width:220,
+        width:200,
         position:'relative',
         top:-300
     }

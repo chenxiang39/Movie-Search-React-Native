@@ -11,9 +11,15 @@ export default horizonlist = (props) => {
             type:item.type
         })
     }
+    const LongClickFun = (item) =>{
+        alert(item.id);
+    }
     const renderItem = ({item,index}) =>{
         return (
-            <TouchableOpacity style={styles.container} onPress = {()=>ClickFun(item)}>
+            <TouchableOpacity style={styles.container} 
+                onPress = {()=>ClickFun(item)}
+                onLongPress = {()=>LongClickFun(item)}
+            >
                 <Image style={styles.pic} source = {{uri:item.poster_path}} />
                 <Text style={styles.title}>{item.title}</Text>
                 <Text style={styles.time}>({item.date})</Text>
