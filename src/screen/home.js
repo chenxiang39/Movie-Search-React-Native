@@ -2,11 +2,16 @@ import * as React from 'react';
 import { useRef,useLayoutEffect, useState, useEffect} from 'react';
 import { View, Text, Animated, StyleSheet, Button} from 'react-native';
 import Topright from '../common/topright'
+import {tvTopCarousel, movieTopCarousel} from '../dataModel/TopCarousel'
+import Carousel from '../common/carousel'
 import {ip} from '../IpAddress.json'
+import {Dimensions} from 'react-native';
+global.deviceWidth = Dimensions.get('window').width
+global.deviceHeight = Dimensions.get('window').height
 export default  home = ({navigation}) => {
     const [isMovie, SetisMovie] = useState(true);
     const [loading, Setloading] = useState(true);
-    const [nowPlayingData, SetnowPlayingData] = useState([])
+    const [topCarouselData, SettopCarouselData] = useState([]);
 
     const yoff = useRef(new Animated.Value(0)).current;
     const headerbk = yoff.interpolate({
@@ -35,10 +40,12 @@ export default  home = ({navigation}) => {
 
     useEffect(async () =>{
       try{
-        let res = await fetch(ip.node + "/gets/currently_playing");
-        const data = await res.json();
-        alert(data[1])
-        Setloading(false);
+        if(isMovie){
+          let res = await fetch(ip.node + "/gets/currently_playing");
+          const data = await res.json();
+          SettopCarouselData(movieTopCarousel(data));
+          Setloading(false);
+        }
       }catch(e){
         alert(e);
       }
@@ -69,6 +76,7 @@ export default  home = ({navigation}) => {
           }
         >
             <Text style = {[styles.blackbold,styles.title]}>USC Films</Text>
+            <Carousel data = {topCarouselData} sliderWidth = {0.92 * deviceWidth} itemWidth = {0.92 * deviceWidth}></Carousel>
         </Animated.ScrollView>
       )
     }
