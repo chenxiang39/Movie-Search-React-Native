@@ -1,16 +1,11 @@
 import * as React from 'react';
-import {
-    Menu,
-    MenuOptions,
-    MenuOption,
-    MenuTrigger,
-    MenuProvider,
-} from 'react-native-popup-menu';
-import { View, Text, Image,ImageBackground,TouchableOpacity,StyleSheet, FlatList} from 'react-native';
+import {useState} from 'react';
+import { View, Text, Image,TouchableOpacity,StyleSheet, FlatList} from 'react-native';
 import {Dimensions} from 'react-native';
 global.deviceWidth = Dimensions.get('window').width
 global.deviceHeight = Dimensions.get('window').height
 export default horizonlist = (props) => {
+    const [modelVisible, SetmodelVisible] = useState(false)
     const ClickFun = (item) =>{
         props.navigation.navigate('Details',{
             id:item.id,
@@ -18,7 +13,10 @@ export default horizonlist = (props) => {
         })
     }
     const LongClickFun = (item) =>{
-        alert(item.id);
+        SetmodelVisible(visible => !visible);
+    }
+    const cancelModal = () =>{
+        SetmodelVisible(false);
     }
     const renderItem = ({item,index}) =>{
         return (
@@ -29,18 +27,21 @@ export default horizonlist = (props) => {
                 <Image style={styles.pic} source = {{uri:item.poster_path}} />
                 <Text style={styles.title}>{item.title}</Text>
                 <Text style={styles.time}>({item.date})</Text>
+                <View style={styles.space}></View>
             </TouchableOpacity>
         )
     }
     return (
-        <FlatList
-            data = {props.data}
-            renderItem = {renderItem}
-            keyExtractor = {item => item.id}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-        >
-        </FlatList>
+        <View>
+            <FlatList
+                data = {props.data}
+                renderItem = {renderItem}
+                keyExtractor = {item => item.id}
+                horizontal={true}
+            >
+            </FlatList>
+        </View>
+        
     )
 }
 
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
         display:'flex',
         flexDirection:'column',
         width:(0.92 * deviceWidth - 0.2 * deviceWidth)/3,
-        marginRight:0.1 * deviceWidth
+        marginRight:0.1 * deviceWidth,
     },
     pic: {
         height:150,
@@ -67,5 +68,8 @@ const styles = StyleSheet.create({
         textAlign:'center',
         color:'rgb(100,100,100)',
         fontSize:12,
+    },
+    space:{
+        height:20
     }
 }); 
