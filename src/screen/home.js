@@ -3,7 +3,9 @@ import { useRef,useLayoutEffect, useState, useEffect} from 'react';
 import { View, Text, Animated, StyleSheet, Button} from 'react-native';
 import Topright from '../common/topright'
 import {tvTopCarousel, movieTopCarousel} from '../dataModel/TopCarousel'
+import {tvHorizonlist, movieHorizonlist} from '../dataModel/Horizonlist'
 import Carousel from '../common/carousel'
+import Horizonlist from '../common/horizonlist'
 import {ip} from '../IpAddress.json'
 import {Dimensions} from 'react-native';
 global.deviceWidth = Dimensions.get('window').width
@@ -12,7 +14,7 @@ export default  home = ({navigation}) => {
     const [isMovie, SetisMovie] = useState(true);
     const [loading, Setloading] = useState(true);
     const [topCarouselData, SettopCarouselData] = useState([]);
-
+    const [topRateData, SettopRateData] = useState([]);
     const yoff = useRef(new Animated.Value(0)).current;
     const headerbk = yoff.interpolate({
       inputRange:[0,20,40],
@@ -42,18 +44,27 @@ export default  home = ({navigation}) => {
       try{
         if(isMovie){
           let res = await fetch(ip.node + "/gets/currently_playing");
-          const data = await res.json();
-          SettopCarouselData(movieTopCarousel(data));
+          const currently_playing_Data = await res.json();
+          res = await fetch(ip.node + "/gets/top_rated_movies");
+          const topListData = await res.json();
+          SettopCarouselData(movieTopCarousel(currently_playing_Data));
+          SettopRateData(movieHorizonlist(topListData));
           Setloading(false);
         }
         else{
-
+          let res = await fetch(ip.node + "/gets/airing_today");
+          const airing_today_data = await res.json();
+          res = await fetch(ip.node + "/gets/top_rated_tv");
+          const topListData = await res.json();
+          SettopCarouselData(tvTopCarousel(airing_today_data));
+          SettopRateData(tvHorizonlist(topListData));
+          Setloading(false);
         }
       }catch(e){
         alert(e);
       }
 
-    })
+    },[isMovie])
     if(loading){
       return (
         <View>
@@ -79,8 +90,12 @@ export default  home = ({navigation}) => {
           }
         >
             <Text style = {[styles.blackbold,styles.title]}>USC Films</Text>
-            <Text style = {[styles.blackbold,styles.topCarouselTitle]}>{isMovie?'Now Playing':'Trending'}</Text>
-            <Carousel data = {topCarouselData} navigation = {navigation} sliderWidth = {0.92 * deviceWidth} itemWidth = {0.92 * deviceWidth}></Carousel>
+            <Text style = {[styles.blackbold,styles.CarouselTitle]}>{isMovie?'Now Playing':'Trending'}</Text>
+            <View style = {styles.topCarousel}>
+                <Carousel data = {topCarouselData} navigation = {navigation} sliderWidth = {0.92 * deviceWidth} itemWidth = {0.92 * deviceWidth}></Carousel>
+            </View>
+            <Text style = {[styles.blackbold,styles.CarouselTitle]}>TopRated</Text>
+            <Horizonlist data = {topRateData} navigation = {navigation}></Horizonlist>
         </Animated.ScrollView>
       )
     }
@@ -96,10 +111,13 @@ const styles = StyleSheet.create({
   title:{
     fontSize:30
   },
-  topCarouselTitle:{
+  CarouselTitle:{
     fontSize:22,
     marginTop:'3%',
     marginBottom:'4%'
+  },
+  topCarousel:{
+    height:300
   },
   blackbold:{
     color:'black',

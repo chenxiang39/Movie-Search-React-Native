@@ -8,7 +8,7 @@ export default topright = (props) => {
             <Button onPress={() => {
                 Settitle(!title);
                 props.SetisMovie(isMovie => !isMovie);
-            }} title= {title ? "Movies" : "TV Shows"} />
+            }} title= {title ? "TV Shows" : "Movies"} />
         )
     }
     else{

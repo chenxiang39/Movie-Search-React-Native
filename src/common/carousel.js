@@ -47,4 +47,4 @@ const styles = StyleSheet.create({
         position:'relative',
         top:-300
     }
-});
+}); 
