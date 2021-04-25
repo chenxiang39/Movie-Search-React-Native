@@ -6,6 +6,7 @@ import {tvTopCarousel, movieTopCarousel} from '../dataModel/TopCarousel'
 import {tvHorizonlist, movieHorizonlist} from '../dataModel/Horizonlist'
 import Carousel from '../common/carousel'
 import Horizonlist from '../common/horizonlist'
+import Loading from '../common/loading'
 import {ip} from '../IpAddress.json'
 import {Dimensions} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -82,14 +83,12 @@ export default  home = ({navigation}) => {
     }
     if(loading){
       return (
-        <View>
-            <Text>loading</Text>
-        </View>
+        <Loading></Loading>
       )
     }
     else{
       return (
-        <Animated.ScrollView contentContainerStyle={{paddingBottom: 25}} style = {styles.container}
+        <Animated.ScrollView contentContainerStyle={styles.containerConetent} style = {styles.container}
           scrollEventThrottle = {16}
           automaticallyAdjustContentInsets
           onScroll = {
@@ -128,6 +127,9 @@ export default  home = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
+  containerConetent:{
+    paddingBottom:25
+  },
   container: {
     paddingTop: 10,
     paddingLeft : '4%',
