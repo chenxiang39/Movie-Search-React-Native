@@ -44,13 +44,22 @@ export default  home = ({navigation}) => {
             })
           }
         >
-            <Text>{isMovie ? 'Movie' : 'TV shows'}</Text>
+            <Text style = {[styles.blackbold,styles.title]}>USC Films</Text>
         </Animated.ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: '3%'
+    marginTop: '3%',
+    marginLeft : '4%',
+    marginRight: '4%',
   },
+  title:{
+    fontSize:26
+  },
+  blackbold:{
+    color:'black',
+    fontWeight:'bold'
+  }
 });

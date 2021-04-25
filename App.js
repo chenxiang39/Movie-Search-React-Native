@@ -2,7 +2,6 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import home from './src/screen/home'
 import search from './src/screen/search'
 import watchlist from './src/screen/watchlist'
@@ -43,6 +42,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
+        initialRouteName = "Home"
         screenOptions={({route}) => ({
           // tabBarIcon: ({focused, color, size}) => {
           //   if (route.name === 'Home') {
