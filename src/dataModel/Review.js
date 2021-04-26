@@ -7,7 +7,7 @@ export const review = function(dataArr){
             content : !dataArr[i].content ? '' : dataArr[i].content,
             created_at : !dataArr[i].created_at ? '' : moment(dataArr[i].created_at).format('LL'),
             url : !dataArr[i].url ? '' : dataArr[i].url,
-            rating : !dataArr[i].author_details || !dataArr[i].author_details.rating ? '★ ' + 0 : '★ ' + dataArr[i].author_details.rating,
+            rating : !dataArr[i].author_details || !dataArr[i].author_details.rating ? '0.0/5.0' : (dataArr[i].author_details.rating / 2.0).toFixed(1) + '/5.0',
         }
         res.push(cur);
     }

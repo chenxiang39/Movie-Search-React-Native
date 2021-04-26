@@ -6,6 +6,7 @@ import home from './src/screen/home'
 import search from './src/screen/search'
 import watchlist from './src/screen/watchlist'
 import detail from './src/screen/detail'
+
 const HomeStack = createStackNavigator();
 function HomeStackScreen() {
   return (

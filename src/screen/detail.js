@@ -5,6 +5,7 @@ import YoutubePlayer from "react-native-youtube-iframe";
 import Topright from '../common/topright';
 import Loading from '../common/loading';
 import Horizonlist from '../common/horizonlist'
+import Verticallist from '../common/verticallist'
 import {video} from '../dataModel/Video'
 import {movieDetail, tvDetail} from '../dataModel/Detail'
 import {cast} from '../dataModel/Cast'
@@ -92,8 +93,25 @@ export default detail = ({route, navigation}) => {
         )
       }
     }
+    renderCast = () =>{
+      if(castData.length !== 0){
+        return (
+           <View>
+              <Text style = {[styles.blackbold, styles.secondTitle]}> Cast & Crew </Text>
+              <Horizonlist name = "cast" data = {castData}></Horizonlist>
+           </View>
+        )
+      }
+    }
     renderReview = () =>{
-
+       if(reviewData.length !== 0){
+         return (
+            <View>
+                <Text style = {[styles.blackbold, styles.thirdTitle]}> Reviews </Text>
+                <Verticallist name = "review" data = {reviewData} navigation = {navigation}></Verticallist>
+            </View>
+         )
+       }
     }
     showMoreFun = () =>{
        SetshowMore( cur => !cur);
@@ -133,9 +151,8 @@ export default detail = ({route, navigation}) => {
           <Text style = {[styles.voteText]}>{detailData.vote_average}</Text>
         </View>
         {renderShowMore()}
-        <Text style = {[styles.blackbold, styles.secondTitle]}> Cast & Crew </Text>
-        <Horizonlist name = "cast" data = {castData}></Horizonlist>
-        <Text style = {[styles.blackbold, styles.thirdTitle]}> Reviews </Text>
+        {renderCast()}
+        {renderReview()}
       </Animated.ScrollView>
       )
     }
@@ -143,7 +160,7 @@ export default detail = ({route, navigation}) => {
 
 const styles = StyleSheet.create({
   containerConetent:{
-    paddingBottom:50
+    paddingBottom:80
   },
   container: {
     paddingTop: 60,
