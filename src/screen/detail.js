@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useLayoutEffect,useState, useEffect,useRef} from "react";
 import { View, Text, Animated, ScrollView, StyleSheet} from 'react-native';
+import YoutubePlayer from "react-native-youtube-iframe";
 import Topright from '../common/topright';
 import Loading from '../common/loading'
 import {movieDetail, tvDetail} from '../dataModel/Detail'
@@ -77,7 +78,10 @@ export default detail = ({route, navigation}) => {
             useNativeDriver:false
           })
         }>
-
+        <YoutubePlayer
+           height={300}
+           videoId={"iee2TATGMyI"}
+        ></YoutubePlayer>
         </Animated.ScrollView>
       )
     }
