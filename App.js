@@ -69,7 +69,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName = "Home"
+        initialRouteName = "Search"
         screenOptions={({route}) => ({
           // tabBarIcon: ({focused, color, size}) => {
           //   if (route.name === 'Home') {
