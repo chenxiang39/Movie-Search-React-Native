@@ -1,22 +1,32 @@
 import * as React from 'react';
 import { useRef,useLayoutEffect, useState, useEffect} from 'react';
 import { View, Text, StyleSheet, TextInput} from 'react-native';
+import { SearchBar , Icon} from 'react-native-elements';
 export default  search = ({navigation, route}) => {
+ 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown:false
     });
   }, [navigation]); 
+
+  const updateSearch = () =>{
+    alert('2')
+  }
   return (
     <View style = {styles.container}>
         <Text style = {styles.title}>Search</Text>
-        <View style = {styles.searchContainer}>
-            <View style = {styles.icon}></View>
-            <TextInput
-                style = {styles.input}
-                clearButtonMode = 'while-editing'
-            />
-        </View>
+        <Icon
+          name='sc-telegram'
+          type='evilicon'
+          color='#517fa4'
+          size = '20'
+        />
+        <SearchBar
+          placeholder="Type Here..."
+          onChangeText={updateSearch}
+          value={search}
+        />
         <View style = {styles.space}></View>
     </View>
   )
