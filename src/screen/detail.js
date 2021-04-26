@@ -10,6 +10,7 @@ import {video} from '../dataModel/Video'
 import {movieDetail, tvDetail} from '../dataModel/Detail'
 import {cast} from '../dataModel/Cast'
 import {review} from '../dataModel/Review'
+import {movieHorizonlist,tvHorizonlist} from '../dataModel/Horizonlist'
 import {ip} from '../IpAddress.json'
 export default detail = ({route, navigation}) => {
     const type = route.params.type;
@@ -20,6 +21,7 @@ export default detail = ({route, navigation}) => {
     const [showMore, SetshowMore] = useState(true);
     const [castData, SetcastData] = useState([]);
     const [reviewData, SetreviewData] = useState([]);
+    const [recommendedData, SetrecommendedData] = useState([]);
     const yoff = useRef(new Animated.Value(0)).current;
     const headerbk = yoff.interpolate({
       inputRange:[0,20,40],
@@ -41,6 +43,7 @@ export default detail = ({route, navigation}) => {
         headerTitle:'Back'
       });
     }, [navigation]); 
+
     useEffect(async()=>{
       try{
         if(type === 'movie'){
@@ -52,10 +55,13 @@ export default detail = ({route, navigation}) => {
           const cast_data = await res.json();
           res = await fetch(ip.node + "/gets/review_movie?id=" + id);
           const review_data = await res.json();
+          res = await fetch(ip.node + "/gets/recommended_movie?id=" + id);
+          const recommended_data = await res.json();
           SetdetailData(movieDetail(detail_data));
           SetvideoData(video(video_data));
           SetcastData(cast(cast_data));
           SetreviewData(review(review_data));
+          SetrecommendedData(movieHorizonlist(recommended_data));
           Setloading(false);
         }
         else{
@@ -67,10 +73,13 @@ export default detail = ({route, navigation}) => {
           const cast_data = await res.json();
           res = await fetch(ip.node + "/gets/review_tv?id=" + id);
           const review_data = await res.json();
+          res = await fetch(ip.node + "/gets/recommended_tv?id=" + id);
+          const recommended_data = await res.json();
           SetdetailData(tvDetail(detail_data));
           SetvideoData(video(video_data));
           SetcastData(cast(cast_data));
           SetreviewData(review(review_data));
+          SetrecommendedData(tvHorizonlist(recommended_data));
           Setloading(false);
         }
       }catch(e){
@@ -114,6 +123,18 @@ export default detail = ({route, navigation}) => {
          )
        }
     }
+    renderRecommended = () =>{
+      if(recommendedData.length !== 0){
+        return (
+          <View>
+              <Text style = {[styles.blackbold, styles.thirdTitle]}> Recommended {type === 'movie' ? "Movies":"TV Shows"} </Text>
+              <View style = {styles.recommendedlist}>
+                <Horizonlist name = "recommended" data = {recommendedData} navigation = {navigation} route = {route}></Horizonlist>
+              </View>
+          </View>
+       )
+      }
+    }
     showMoreFun = () =>{
        SetshowMore( cur => !cur);
     }
@@ -154,6 +175,7 @@ export default detail = ({route, navigation}) => {
         {renderShowMore()}
         {renderCast()}
         {renderReview()}
+        {renderRecommended()}
       </Animated.ScrollView>
       )
     }
@@ -212,6 +234,9 @@ const styles = StyleSheet.create({
     marginTop:5,
     marginBottom:20,
     fontSize:22
+  },
+  recommendedlist:{
+    paddingLeft:20
   },
   blackbold:{
     color:'black',

@@ -12,7 +12,7 @@ import {Dimensions} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 global.deviceWidth = Dimensions.get('window').width
 global.deviceHeight = Dimensions.get('window').height
-export default  home = ({navigation}) => {
+export default  home = ({navigation,route}) => {
     const [isMovie, SetisMovie] = useState(true);
     const [loading, Setloading] = useState(true);
     const [topCarouselData, SettopCarouselData] = useState([]);
@@ -109,9 +109,9 @@ export default  home = ({navigation}) => {
                 <Carousel data = {topCarouselData} navigation = {navigation} sliderWidth = {0.92 * deviceWidth} itemWidth = {0.92 * deviceWidth}></Carousel>
             </View>
             <Text style = {[styles.blackbold,styles.CarouselTitle]}>TopRated</Text>
-            <Horizonlist name = "movieOrtv" data = {topRateData} navigation = {navigation}></Horizonlist>
+            <Horizonlist name = "movieOrtv" data = {topRateData} navigation = {navigation} route = {route}></Horizonlist>
             <Text style = {[styles.blackbold,styles.CarouselTitle, styles.SecondTitle]}>Popular</Text>
-            <Horizonlist name = "movieOrtv" data = {popularData} navigation = {navigation}></Horizonlist>
+            <Horizonlist name = "movieOrtv" data = {popularData} navigation = {navigation} route = {route}></Horizonlist>
             <View style = {styles.bottombtn}>
               <View style = {styles.space}></View>
               <TouchableOpacity onPress = {clickBottomFun}>

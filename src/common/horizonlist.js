@@ -7,13 +7,21 @@ global.deviceHeight = Dimensions.get('window').height
 export default horizonlist = (props) => {
     const [modelVisible, SetmodelVisible] = useState(false)
     const ClickFun = (item) =>{
-        props.navigation.navigate('Details',{
-            screen: 'detail',
-            params:{
+        if(props.route.name === "USC Films"){
+            props.navigation.navigate('Details',{
+                screen: 'detail',
+                params:{
+                    id:item.id,
+                    type:item.type
+                }
+            })
+        }
+        else if(props.route.name === "detail"){
+            props.navigation.push('detail',{
                 id:item.id,
                 type:item.type
-            }
-        })
+            })
+        }
     }
     const LongClickFun = (item) =>{
         SetmodelVisible(visible => !visible);
@@ -43,6 +51,16 @@ export default horizonlist = (props) => {
             </View>
         )
     }
+    const renderRecommendedItem = ({item,index}) =>{
+        return (
+            <TouchableOpacity style={[styles.container1]} 
+                onPress = {()=>ClickFun(item)}
+            >
+                <Image style={styles.pic} source = {{uri:item.poster_path}} />
+                <View style={styles.space}></View>
+            </TouchableOpacity>
+        )
+    }
     if(props.name === "movieOrtv"){
         return (
             <View>
@@ -59,14 +77,27 @@ export default horizonlist = (props) => {
     else if(props.name === "cast"){
         return (
             <View>
-            <FlatList
-                data = {props.data}
-                renderItem = {renderCastItem}
-                keyExtractor = {item => item.id}
-                horizontal={true}
-            >
-            </FlatList>
-        </View>
+                <FlatList
+                    data = {props.data}
+                    renderItem = {renderCastItem}
+                    keyExtractor = {item => item.id}
+                    horizontal={true}
+                >
+                </FlatList>
+            </View>
+        )
+    }
+    else if(props.name === "recommended"){
+        return (
+            <View>
+                 <FlatList
+                    data = {props.data}
+                    renderItem = {renderRecommendedItem}
+                    keyExtractor = {item => item.id}
+                    horizontal={true}
+                >
+                </FlatList>
+            </View>
         )
     }
     else{
