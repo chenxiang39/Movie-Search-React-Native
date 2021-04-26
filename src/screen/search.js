@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useRef,useLayoutEffect, useState, useEffect} from 'react';
 import { View, Text, StyleSheet, TextInput} from 'react-native';
-import { SearchBar , Icon} from 'react-native-elements';
+// import { SearchBar , Icon} from 'react-native-elements';
 export default  search = ({navigation, route}) => {
  
   useLayoutEffect(() => {
@@ -16,17 +16,17 @@ export default  search = ({navigation, route}) => {
   return (
     <View style = {styles.container}>
         <Text style = {styles.title}>Search</Text>
-        <Icon
+        {/* <Icon
           name='sc-telegram'
           type='evilicon'
           color='#517fa4'
           size = '20'
-        />
-        <SearchBar
+        /> */}
+        {/* <SearchBar
           placeholder="Type Here..."
           onChangeText={updateSearch}
           value={search}
-        />
+        /> */}
         <View style = {styles.space}></View>
     </View>
   )

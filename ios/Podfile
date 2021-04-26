@@ -13,7 +13,6 @@ target 'USC_Films_HW9' do
   )
 
 
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   target 'USC_Films_HW9Tests' do
     inherit! :complete
