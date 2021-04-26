@@ -6,39 +6,65 @@ import home from './src/screen/home'
 import search from './src/screen/search'
 import watchlist from './src/screen/watchlist'
 import detail from './src/screen/detail'
-
+import review from './src/screen/review'
+const DetailStack = createStackNavigator();
+function DetailStackScreen(){
+  return (
+    <DetailStack.Navigator>
+        <DetailStack.Screen name="detail" component={detail} />
+        <DetailStack.Screen name="review" component={review} />
+    </DetailStack.Navigator>
+  )
+}
 const HomeStack = createStackNavigator();
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="USC Films" component={home} />
-      <HomeStack.Screen name="Details" component={detail} />
+      <HomeStack.Screen 
+        name="Details" 
+        component={DetailStackScreen} 
+        options={{
+          headerShown : false
+        }}
+      />
     </HomeStack.Navigator>
   );
 }
 
 const SearchStack = createStackNavigator();
-
 function SearchStackScreen() {
   return (
     <SearchStack.Navigator>
       <SearchStack.Screen name="Search" component={search} />
-      <SearchStack.Screen name="Details" component={detail} />
+      <HomeStack.Screen 
+        name="Details" 
+        component={DetailStackScreen} 
+        options={{
+          headerShown : false
+        }}
+      />
     </SearchStack.Navigator>
   );
 }
-const WatchlistStack = createStackNavigator();
 
+const WatchlistStack = createStackNavigator();
 function WatchlistStackScreen() {
   return (
     <WatchlistStack.Navigator>
       <WatchlistStack.Screen name="WatchList" component={watchlist} />
-      <WatchlistStack.Screen name="Details" component={detail} />
+      <HomeStack.Screen 
+        name="Details" 
+        component={DetailStackScreen} 
+        options={{
+          headerShown : false
+        }}
+      />
     </WatchlistStack.Navigator>
   );
 }
-const Tab = createBottomTabNavigator();
 
+const Tab = createBottomTabNavigator();
 export default function App() {
   return (
     <NavigationContainer>

@@ -4,8 +4,11 @@ import { View, Text, Image,ImageBackground,TouchableOpacity,StyleSheet} from 're
 export default carousel = (props) => {
     const ClickFun = (item) =>{
         props.navigation.navigate('Details',{
-            id:item.id,
-            type:item.type
+            screen: 'detail',
+            params:{
+                id:item.id,
+                type:item.type
+            }
         })
     }
     renderItem = ({item,index}) =>{

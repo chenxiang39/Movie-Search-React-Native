@@ -8,8 +8,11 @@ export default horizonlist = (props) => {
     const [modelVisible, SetmodelVisible] = useState(false)
     const ClickFun = (item) =>{
         props.navigation.navigate('Details',{
-            id:item.id,
-            type:item.type
+            screen: 'detail',
+            params:{
+                id:item.id,
+                type:item.type
+            }
         })
     }
     const LongClickFun = (item) =>{
