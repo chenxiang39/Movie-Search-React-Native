@@ -18,9 +18,9 @@ export default horizonlist = (props) => {
     const cancelModal = () =>{
         SetmodelVisible(false);
     }
-    const renderItem = ({item,index}) =>{
+    const renderItemMovieOrTV = ({item,index}) =>{
         return (
-            <TouchableOpacity style={styles.container} 
+            <TouchableOpacity style={styles.container1} 
                 onPress = {()=>ClickFun(item)}
                 onLongPress = {()=>LongClickFun(item)}
             >
@@ -31,26 +31,60 @@ export default horizonlist = (props) => {
             </TouchableOpacity>
         )
     }
-    return (
-        <View>
+    const renderCastItem = ({item,index}) =>{
+        return (
+            <View  style={styles.container2}>
+                <Image style={styles.picRound} source = {{uri:item.profile_path}} />
+                <Text style={styles.name}>{item.name}</Text>
+                <View style={styles.space2}></View>
+            </View>
+        )
+    }
+    if(props.name === "movieOrtv"){
+        return (
+            <View>
+                <FlatList
+                    data = {props.data}
+                    renderItem = {renderItemMovieOrTV}
+                    keyExtractor = {item => item.id}
+                    horizontal={true}
+                >
+                </FlatList>
+            </View>
+        )
+    }
+    else if(props.name === "cast"){
+        return (
+            <View>
             <FlatList
                 data = {props.data}
-                renderItem = {renderItem}
+                renderItem = {renderCastItem}
                 keyExtractor = {item => item.id}
                 horizontal={true}
             >
             </FlatList>
         </View>
-        
-    )
+        )
+    }
+    else{
+        return (
+            <View></View>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
-    container:{
+    container1:{
         display:'flex',
         flexDirection:'column',
         width:(0.92 * deviceWidth - 0.2 * deviceWidth)/3,
         marginRight:0.1 * deviceWidth,
+    },
+    container2:{
+        display:'flex',
+        flexDirection:'column',
+        width: 70,
+        marginRight:20
     },
     pic: {
         height:150,
@@ -69,7 +103,22 @@ const styles = StyleSheet.create({
         color:'rgb(100,100,100)',
         fontSize:12,
     },
+    picRound:{
+        borderRadius:70,
+        height:70,
+        width:70,
+    },
+    name:{
+        marginTop:15,
+        textAlign:'center',
+        lineHeight:16,
+        color:'black',
+        fontSize:12,
+    },
     space:{
         height:20
+    },
+    space2:{
+        height:10
     }
 }); 

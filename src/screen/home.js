@@ -109,9 +109,9 @@ export default  home = ({navigation}) => {
                 <Carousel data = {topCarouselData} navigation = {navigation} sliderWidth = {0.92 * deviceWidth} itemWidth = {0.92 * deviceWidth}></Carousel>
             </View>
             <Text style = {[styles.blackbold,styles.CarouselTitle]}>TopRated</Text>
-            <Horizonlist data = {topRateData} navigation = {navigation}></Horizonlist>
+            <Horizonlist name = "movieOrtv" data = {topRateData} navigation = {navigation}></Horizonlist>
             <Text style = {[styles.blackbold,styles.CarouselTitle, styles.SecondTitle]}>Popular</Text>
-            <Horizonlist data = {popularData} navigation = {navigation}></Horizonlist>
+            <Horizonlist name = "movieOrtv" data = {popularData} navigation = {navigation}></Horizonlist>
             <View style = {styles.bottombtn}>
               <View style = {styles.space}></View>
               <TouchableOpacity onPress = {clickBottomFun}>

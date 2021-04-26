@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { useLayoutEffect,useState, useEffect,useRef} from "react";
-import { View, Text, Animated, ScrollView, StyleSheet} from 'react-native';
+import { View, Text, Animated, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import YoutubePlayer from "react-native-youtube-iframe";
 import Topright from '../common/topright';
-import Loading from '../common/loading'
-import {movieDetail, tvDetail} from '../dataModel/Detail'
+import Loading from '../common/loading';
+import Horizonlist from '../common/horizonlist'
 import {video} from '../dataModel/Video'
+import {movieDetail, tvDetail} from '../dataModel/Detail'
+import {cast} from '../dataModel/Cast'
+import {review} from '../dataModel/Review'
 import {ip} from '../IpAddress.json'
 export default detail = ({route, navigation}) => {
     const type = route.params.type;
@@ -13,6 +16,9 @@ export default detail = ({route, navigation}) => {
     const [loading, Setloading] = useState(true);
     const [detailData, SetdetailData] = useState({});
     const [videoData, SetvideoData] = useState({});
+    const [showMore, SetshowMore] = useState(true);
+    const [castData, SetcastData] = useState([]);
+    const [reviewData, SetreviewData] = useState([]);
     const yoff = useRef(new Animated.Value(0)).current;
     const headerbk = yoff.interpolate({
       inputRange:[0,20,40],
@@ -40,8 +46,14 @@ export default detail = ({route, navigation}) => {
           const detail_data = await res.json();
           res = await fetch(ip.node + "/gets/video_movie?id=" + id);
           const video_data = await res.json();
+          res = await fetch(ip.node + "/gets/cast_movie?id=" + id);
+          const cast_data = await res.json();
+          res = await fetch(ip.node + "/gets/review_movie?id=" + id);
+          const review_data = await res.json();
           SetdetailData(movieDetail(detail_data));
           SetvideoData(video(video_data));
+          SetcastData(cast(cast_data));
+          SetreviewData(review(review_data));
           Setloading(false);
         }
         else{
@@ -49,14 +61,43 @@ export default detail = ({route, navigation}) => {
           const detail_data = await res.json();
           res = await fetch(ip.node + "/gets/video_tv?id=" + id);
           const video_data = await res.json();
+          res = await fetch(ip.node + "/gets/cast_tv?id=" + id);
+          const cast_data = await res.json();
+          res = await fetch(ip.node + "/gets/review_tv?id=" + id);
+          const review_data = await res.json();
           SetdetailData(tvDetail(detail_data));
           SetvideoData(video(video_data));
+          SetcastData(cast(cast_data));
+          SetreviewData(review(review_data));
           Setloading(false);
         }
       }catch(e){
         alert(e)
       }
     },[])
+    renderShowMore = () =>{
+      if(!!detailData.overview){
+        return (
+          <View style = {styles.overview}>
+            {
+               showMore ? <Text numberOfLines = {3}>{detailData.overview}</Text> : <Text>{detailData.overview}</Text>
+            }
+            <View style = {styles.showMoreBtn}>
+              <View style = {styles.space}></View>
+              <TouchableOpacity onPress = {showMoreFun}>
+                  <Text style = {styles.btnFont}>{showMore?'Show more..':'Show less'}</Text>
+              </TouchableOpacity>
+              </View>
+          </View>
+        )
+      }
+    }
+    renderReview = () =>{
+
+    }
+    showMoreFun = () =>{
+       SetshowMore( cur => !cur);
+    }
     if(loading){
       return (
         <Loading></Loading>
@@ -91,15 +132,18 @@ export default detail = ({route, navigation}) => {
           <Text style = {[styles.red]}>★  </Text>
           <Text style = {[styles.voteText]}>{detailData.vote_average}</Text>
         </View>
-        <Text numberOfLines={3}>{detailData.overview}</Text>
-        </Animated.ScrollView>
+        {renderShowMore()}
+        <Text style = {[styles.blackbold, styles.secondTitle]}> Cast & Crew </Text>
+        <Horizonlist name = "cast" data = {castData}></Horizonlist>
+        <Text style = {[styles.blackbold, styles.thirdTitle]}> Reviews </Text>
+      </Animated.ScrollView>
       )
     }
 }
 
 const styles = StyleSheet.create({
   containerConetent:{
-    paddingBottom:25
+    paddingBottom:50
   },
   container: {
     paddingTop: 60,
@@ -125,6 +169,30 @@ const styles = StyleSheet.create({
   red:{
     color:'red',
     fontSize:20
+  },
+  space:{
+    flex:1
+  },
+  overview:{
+    marginTop:10
+  },
+  showMoreBtn:{
+    marginTop:15,
+    display:'flex',
+    flexDirection:'row'
+  },
+  btnFont:{
+    color:'rgb(100,100,100)'
+  },
+  secondTitle:{
+      marginTop:15,
+      marginBottom:20,
+      fontSize:22
+  },
+  thirdTitle:{
+    marginTop:5,
+    marginBottom:20,
+    fontSize:22
   },
   blackbold:{
     color:'black',
