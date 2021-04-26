@@ -78,10 +78,20 @@ export default detail = ({route, navigation}) => {
             useNativeDriver:false
           })
         }>
-        <YoutubePlayer
-           height={300}
-           videoId={"iee2TATGMyI"}
-        ></YoutubePlayer>
+        {!videoData.key ?
+          <View />:
+          <YoutubePlayer
+          height={200}
+          videoId={videoData.key}/>
+        }
+        
+        <Text style = {[styles.blackbold,styles.title]}>{detailData.title}</Text>
+        <Text style = {[styles.info]}>{detailData.release_date} | {detailData.genres} </Text>
+        <View style = {[styles.vote,styles.info]}>
+          <Text style = {[styles.red]}>★  </Text>
+          <Text style = {[styles.voteText]}>{detailData.vote_average}</Text>
+        </View>
+        <Text numberOfLines={3}>{detailData.overview}</Text>
         </Animated.ScrollView>
       )
     }
@@ -92,8 +102,32 @@ const styles = StyleSheet.create({
     paddingBottom:25
   },
   container: {
-    paddingTop: 10,
+    paddingTop: 60,
     paddingLeft : '4%',
     paddingRight: '4%',
   },
+  title:{
+    marginTop:15,
+    fontSize:28,
+  },
+  vote:{
+    display:'flex',
+    flexDirection:'row'
+  },
+  voteText:{
+    lineHeight:20
+  },
+  info:{
+    marginTop:13,
+    fontSize:15,
+    color:'rgb(12,12,12)'
+  },
+  red:{
+    color:'red',
+    fontSize:20
+  },
+  blackbold:{
+    color:'black',
+    fontWeight:'bold'
+  }
 });
