@@ -6,7 +6,13 @@ global.deviceWidth = Dimensions.get('window').width
 global.deviceHeight = Dimensions.get('window').height
 export default verticallist = (props) => {
     const reviewClickFun = (item) =>{
-        alert("111")
+        props.navigation.navigate("review",{
+            title:props.title,
+            author: item.author,
+            created_at: item.created_at,
+            rating:item.rating,
+            content:item.content
+        })
     }
     const renderReview = () =>{
         let review = [];
@@ -72,7 +78,8 @@ const styles = StyleSheet.create({
         fontSize:16,
     },
     ratText:{
-        lineHeight:20
+        lineHeight:25,
+        fontSize:16,
     },
     red:{
         color:'red',

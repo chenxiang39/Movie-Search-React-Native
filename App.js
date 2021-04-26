@@ -25,7 +25,7 @@ function HomeStackScreen() {
         name="Details" 
         component={DetailStackScreen} 
         options={{
-          headerShown : false
+          headerShown : false,
         }}
       />
     </HomeStack.Navigator>

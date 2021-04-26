@@ -37,7 +37,8 @@ export default detail = ({route, navigation}) => {
         },
         headerTitleStyle : {
           opacity : 0
-        }
+        },
+        headerTitle:'Back'
       });
     }, [navigation]); 
     useEffect(async()=>{
@@ -108,7 +109,7 @@ export default detail = ({route, navigation}) => {
          return (
             <View>
                 <Text style = {[styles.blackbold, styles.thirdTitle]}> Reviews </Text>
-                <Verticallist name = "review" data = {reviewData} navigation = {navigation}></Verticallist>
+                <Verticallist name = "review" title = {detailData.title} data = {reviewData} navigation = {navigation}></Verticallist>
             </View>
          )
        }
@@ -176,11 +177,12 @@ const styles = StyleSheet.create({
     flexDirection:'row'
   },
   voteText:{
-    lineHeight:20
+    lineHeight:25,
+    fontSize:16,
   },
   info:{
     marginTop:13,
-    fontSize:15,
+    fontSize:16,
     color:'rgb(12,12,12)'
   },
   red:{
