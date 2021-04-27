@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { useEffect} from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import SplashScreen from 'react-native-splash-screen'
 import home from './src/screen/home'
 import search from './src/screen/search'
 import watchlist from './src/screen/watchlist'
@@ -66,10 +68,13 @@ function WatchlistStackScreen() {
 
 const Tab = createBottomTabNavigator();
 export default function App() {
+  useEffect(async ()=>{
+      await SplashScreen.hide();
+  })
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName = "Search"
+        initialRouteName = "Home"
         screenOptions={({route}) => ({
           // tabBarIcon: ({focused, color, size}) => {
           //   if (route.name === 'Home') {
