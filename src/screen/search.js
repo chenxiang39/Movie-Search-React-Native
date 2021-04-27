@@ -1,32 +1,28 @@
 import * as React from 'react';
 import { useRef,useLayoutEffect, useState, useEffect} from 'react';
-import { View, Text, StyleSheet, TextInput} from 'react-native';
-// import { SearchBar , Icon} from 'react-native-elements';
+import { View, Text, StyleSheet, TextInput, Platform, Button} from 'react-native';
+import { SearchBar , Icon} from 'react-native-elements';
 export default  search = ({navigation, route}) => {
- 
+  const [input, Setinput] = useState("");
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown:false
     });
   }, [navigation]); 
-
-  const updateSearch = () =>{
-    alert('2')
+  const updateSearch = (text) =>{
+    Setinput(text);
   }
   return (
     <View style = {styles.container}>
         <Text style = {styles.title}>Search</Text>
-        {/* <Icon
-          name='sc-telegram'
-          type='evilicon'
-          color='#517fa4'
-          size = '20'
-        /> */}
-        {/* <SearchBar
-          placeholder="Type Here..."
-          onChangeText={updateSearch}
-          value={search}
-        /> */}
+        <SearchBar
+          containerStyle = {styles.searchContainer}
+          inputContainerStyle = {styles.inputContainer}
+          platform={Platform.OS}
+          placeholder='Search Movies, TVs...' 
+          onChangeText = {updateSearch} 
+          value = {input} 
+        />
         <View style = {styles.space}></View>
     </View>
   )
@@ -36,7 +32,7 @@ const styles = StyleSheet.create({
     container:{
       paddingLeft:5,
       paddingRight:5,
-      paddingTop:120,
+      paddingTop:100,
       backgroundColor:'rgba(255,255,255,1)'
     },
     title:{
@@ -46,21 +42,13 @@ const styles = StyleSheet.create({
       paddingLeft:10
     },
     searchContainer:{
-      display:'flex',
-      flexDirection:'row',
-      alignItems:'center',
-      marginTop:20,
       height:35,
-      backgroundColor:'rgb(238,238,238)',
-      borderRadius:10
+      marginTop:20
     },
-    icon:{
-      width:30,
-      height:30
-    },
-    input:{
-      height:30,
-      flex:1
+    inputContainer:{
+      height:35,
+      borderRadius:10,
+      backgroundColor:'rgb(235,235,235)'
     },
     space:{
       height:2000
