@@ -3,6 +3,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useEffect} from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import EvilIcons from 'react-native-vector-icons/EvilIcons'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import SplashScreen from 'react-native-splash-screen'
 import home from './src/screen/home'
 import search from './src/screen/search'
@@ -76,15 +79,15 @@ export default function App() {
       <Tab.Navigator
         initialRouteName = "Home"
         screenOptions={({route}) => ({
-          // tabBarIcon: ({focused, color, size}) => {
-          //   if (route.name === 'Home') {
-          //     return <AntDesign name="search" size={size} color={color} />;
-          //   } else if (route.name === 'Search') {
-          //     return <AntDesign name="search" size={size} color={color} />;
-          //   } else if (route.name === 'WatchList') {
-          //     return <AntDesign name="search" size={size} color={color} />;
-          //   }
-          // },
+          tabBarIcon: ({focused, color, size}) => {
+            if (route.name === 'Search') {
+              return <EvilIcons name="search" size={size} color={color} />;
+            } else if (route.name === 'Home') {
+              return <Ionicons name="home-outline" size={size} color={color} />;
+            } else if (route.name === 'WatchList') {
+              return <AntDesign name="hearto" size={size} color={color} />;
+            }
+          },
         })}
       >
         <Tab.Screen name="Search" component={SearchStackScreen} />
