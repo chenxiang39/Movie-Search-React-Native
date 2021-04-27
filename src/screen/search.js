@@ -103,6 +103,6 @@ const styles = StyleSheet.create({
     },
     space:{
       marginTop:15,
-      height:0.68 * deviceHeight
+      height:0.66 * deviceHeight
     },
 })
