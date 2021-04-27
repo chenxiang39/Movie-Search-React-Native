@@ -31,15 +31,18 @@ export default horizonlist = (props) => {
                 break;
 
             case 'facebook':
-                let weblink = 'https://www.themoviedb.org/' + item.type + '/' + item.id; 
-                let facebooklink = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(weblink)
+                let fblink = 'https://www.themoviedb.org/' + item.type + '/' + item.id; 
+                let facebooklink = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(fblink)
                 Linking.openURL(facebooklink).catch((err) =>
                     console.error('An error occurred', err),
                 );
                 break;
-
             case 'twitter':
-                alert('playing...');
+                let twlink = 'Check out this link:\nhttps://www.themoviedb.org/' + item.type + '/' + item.id + ' #CSCI571USCFilms'; 
+                let twitterlink = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(twlink)
+                Linking.openURL(twitterlink).catch((err) =>
+                    console.error('An error occurred', err),
+                );
                 break;
             };
     }
