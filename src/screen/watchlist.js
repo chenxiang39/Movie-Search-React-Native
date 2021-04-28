@@ -19,10 +19,10 @@ export default class App extends Component {
    * @memberof App
    */
   testImage = () => {
-    const myImage = require('../img/twitter.png');
+    const myImage = require('../img/twitter2.png');
     const resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
     const resolvedImage = Image.resolveAssetSource(myImage);
-    alert(resolvedImage);
+    alert(JSON.stringify(resolvedImage));
   }
 
   render() {

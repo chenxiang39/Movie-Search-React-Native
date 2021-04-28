@@ -3,10 +3,16 @@ import {useState} from 'react';
 import { View, Text, Image,TouchableOpacity,StyleSheet, FlatList,Linking} from 'react-native';
 import {Dimensions} from 'react-native';
 import {ContextMenuView} from "react-native-ios-context-menu"
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Entypo from 'react-native-vector-icons/Entypo'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 global.deviceWidth = Dimensions.get('window').width
 global.deviceHeight = Dimensions.get('window').height
 export default horizonlist = (props) => {
     const [modelVisible, SetmodelVisible] = useState(false)
+    const bookmarkIncon = Image.resolveAssetSource(Ionicons.getImageSourceSync('bookmark-outline',60,'black'))
+    const facebookIcon = Image.resolveAssetSource(FontAwesome.getImageSourceSync('facebook-f',60,'black'));
+    const twitterIcon = Image.resolveAssetSource(Entypo.getImageSourceSync('twitter',60,'black'));
     const ClickFun = (item) =>{
         if(props.route.name === "USC Films"){
             props.navigation.navigate('Details',{
@@ -26,7 +32,7 @@ export default horizonlist = (props) => {
     }
     const contentMenuBtnFun = (e,item) =>{
         switch (e.actionKey) {
-            case 'save':
+            case 'local':
                 alert('saving...');
                 break;
 
@@ -46,9 +52,6 @@ export default horizonlist = (props) => {
                 break;
             };
     }
-    const myImage = require('../img/twitter.png');
-    const resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
-    const resolvedImage = Image.resolveAssetSource(myImage);
     const renderItemMovieOrTV = ({item,index}) =>{
         return (
             <View style = {styles.container}>
@@ -63,22 +66,22 @@ export default horizonlist = (props) => {
                         actionKey  : 'local',
                         actionTitle: 'local',
                         icon: {
-                            iconType : 'SYSTEM',
-                            iconValue: 'square.and.arrow.down',
+                            iconType : 'REQUIRE',
+                            iconValue: bookmarkIncon,
                         }
                         }, {
                         actionKey  : 'facebook',
                         actionTitle: 'Share On FaceBook',
                         icon: {
                             iconType : 'REQUIRE',
-                            iconValue: '',
+                            iconValue: facebookIcon,
                         }
                         }, {
                         actionKey  : 'twitter',
                         actionTitle: 'Share On Twitter',
                         icon: {
-                            iconType : 'SYSTEM',
-                            iconValue: 'play',
+                            iconType : 'REQUIRE',
+                            iconValue: twitterIcon,
                         }
                         }],
                     }}
