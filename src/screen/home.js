@@ -39,7 +39,7 @@ export default  home = ({navigation,route}) => {
         },
         headerTitleStyle : {
           opacity : titleOp
-        }
+        },
       });
     }, [navigation]); 
 

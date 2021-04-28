@@ -12,7 +12,7 @@ import {cast} from '../dataModel/Cast'
 import {review} from '../dataModel/Review'
 import {movieHorizonlist,tvHorizonlist} from '../dataModel/Horizonlist'
 import {ip} from '../IpAddress.json'
-export default detail = ({route, navigation}) => {
+export default detail = ({navigation,route}) => {
     const type = route.params.type;
     const id = route.params.id;
     const [loading, Setloading] = useState(true);
@@ -31,9 +31,9 @@ export default detail = ({route, navigation}) => {
     // const [topRateData, SettopRateData] = useState([]);
     useLayoutEffect(() => {
       navigation.setOptions({
-        // headerRight: () => (
-        //   <Topright name = "home"></Topright>
-        // ),
+        headerRight: () => (
+          <Topright name = "detail" type={type} id={id} title={detailData.title}></Topright>
+        ),
         headerStyle :{
           backgroundColor : headerbk
         },
