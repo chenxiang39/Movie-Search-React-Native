@@ -13,8 +13,14 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 global.deviceWidth = Dimensions.get('window').width
 global.deviceHeight = Dimensions.get('window').height
 export default  home = ({navigation,route}) => {
+    const movtopCarouselData = route.params.movtopCarouselData;
+    const movtopRateData = route.params.movtopRateData;
+    const movpopularData = route.params.movpopularData;
+    const tvtopCarouselData = route.params.tvtopCarouselData;
+    const tvtopRateData = route.params.tvtopRateData;
+    const tvpopularData = route.params.tvpopularData;
+
     const [isMovie, SetisMovie] = useState(true);
-    const [loading, Setloading] = useState(true);
     const [topCarouselData, SettopCarouselData] = useState([]);
     const [topRateData, SettopRateData] = useState([]);
     const [popularData, SetpopularData] = useState([]);
@@ -40,34 +46,21 @@ export default  home = ({navigation,route}) => {
         headerTitleStyle : {
           opacity : titleOp
         },
+        headerBackTitleVisible:false
       });
     }, [navigation]); 
 
-    useEffect(async () =>{
+    useEffect(() =>{
       try{
         if(isMovie){
-          let res = await fetch(ip.node + "/gets/currently_playing");
-          const currently_playing_Data = await res.json();
-          res = await fetch(ip.node + "/gets/top_rated_movies");
-          const topListData = await res.json();
-          res = await fetch(ip.node + "/gets/popular_movies");
-          const popListData = await res.json();
-          SettopCarouselData(movieTopCarousel(currently_playing_Data));
-          SettopRateData(movieHorizonlist(topListData));
-          SetpopularData(movieHorizonlist(popListData));
-          Setloading(false);
+          SettopCarouselData(movtopCarouselData);
+          SettopRateData(movtopRateData);
+          SetpopularData(movpopularData);
         }
         else{
-          let res = await fetch(ip.node + "/gets/airing_today");
-          const airing_today_data = await res.json();
-          res = await fetch(ip.node + "/gets/top_rated_tv");
-          const topListData = await res.json();
-          res = await fetch(ip.node + "/gets/popular_tv");
-          const popListData = await res.json();
-          SettopCarouselData(tvTopCarousel(airing_today_data));
-          SettopRateData(tvHorizonlist(topListData));
-          SetpopularData(tvHorizonlist(popListData));
-          Setloading(false);
+          SettopCarouselData(tvtopCarouselData);
+          SettopRateData(tvtopRateData);
+          SetpopularData(tvpopularData);
         }
       }catch(e){
         alert(e);
@@ -81,12 +74,6 @@ export default  home = ({navigation,route}) => {
           console.error('An error occurred', err),
         );
     }
-    if(loading){
-      return (
-        <Loading></Loading>
-      )
-    }
-    else{
       return (
         <Animated.ScrollView contentContainerStyle={styles.containerConetent} style = {styles.container}
           scrollEventThrottle = {16}
@@ -123,7 +110,6 @@ export default  home = ({navigation,route}) => {
             
         </Animated.ScrollView>
       )
-    }
 }
 
 const styles = StyleSheet.create({

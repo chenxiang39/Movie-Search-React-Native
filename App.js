@@ -12,6 +12,7 @@ import search from './src/screen/search'
 import watchlist from './src/screen/watchlist'
 import detail from './src/screen/detail'
 import review from './src/screen/review'
+import loading from './src/screen/loading'
 const DetailStack = createStackNavigator();
 function DetailStackScreen(){
   return (
@@ -22,10 +23,29 @@ function DetailStackScreen(){
   )
 }
 const HomeStack = createStackNavigator();
+const config = {
+  animation: 'spring',
+  config: {
+    stiffness: 1000,
+    damping: 500,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="USC Films" component={home} />
+      <HomeStack.Screen 
+        name="loading" 
+        component={loading} 
+      />
+      <HomeStack.Screen name="USC Films" component={home} 
+       options={{
+        animationEnabled: false,
+      }}
+      />
       <HomeStack.Screen 
         name="Details" 
         component={DetailStackScreen} 
