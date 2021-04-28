@@ -6,8 +6,6 @@ import Carousel from '../common/carousel'
 import ContentMenuList from '../common/contentMenuList'
 import {Dimensions} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import {watchlistDataModel} from '../dataModel/Watchlist'
-import watchlistLocalStorage from '../localStorage/watchlist'
 global.deviceWidth = Dimensions.get('window').width
 global.deviceHeight = Dimensions.get('window').height
 export default  home = ({navigation,route}) => {
@@ -47,6 +45,9 @@ export default  home = ({navigation,route}) => {
         headerBackTitleVisible:false
       });
     }, [navigation]); 
+
+
+
 
     useEffect(async () =>{
       try{

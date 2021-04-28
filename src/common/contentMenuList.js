@@ -1,12 +1,14 @@
 import * as React from 'react';
-import {useState, useEffect,useRef} from 'react';
+import {useState, useEffect,useRef, useCallback} from 'react';
 import { View, Text, Image,TouchableOpacity,StyleSheet, FlatList,Linking} from 'react-native';
 import watchlistLocalStorage from '../localStorage/watchlist'
+import { useFocusEffect } from '@react-navigation/native';
 import {Dimensions} from 'react-native';
 import {ContextMenuView} from "react-native-ios-context-menu"
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import {watchlistDataModel} from '../dataModel/Watchlist'
 global.deviceWidth = Dimensions.get('window').width
 global.deviceHeight = Dimensions.get('window').height
 global.bookmarkIncon = "";
@@ -15,15 +17,27 @@ export default contentMenuList = (props) => {
 
     const [isLocalData, SetisLocalData] = useState([]);
     const [loadFlag, SetloadFlag] = useState(false);
+
+    useFocusEffect(
+        useCallback(() => {
+          updateLocalData();
+          return () => {
+            
+          };
+        }, [])
+    );
     useEffect(async()=>{
         try{
-            let data = await watchlistLocalStorage.checkContainItemArr(props.data);
-            SetisLocalData(data);
-            SetloadFlag(true);
+            updateLocalData();
         }catch(e){
             alert(e)
         }
     },[loadFlag])
+    const updateLocalData = async () =>{
+        let data = await watchlistLocalStorage.checkContainItemArr(watchlistDataModel(props.data));
+        SetisLocalData(data);
+        SetloadFlag(true);
+    }
     const facebookIcon = Image.resolveAssetSource(FontAwesome.getImageSourceSync('facebook-f',60,'black'));
     const twitterIcon = Image.resolveAssetSource(Entypo.getImageSourceSync('twitter',60,'black'));
     const ClickFun = (item) =>{

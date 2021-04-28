@@ -1,13 +1,15 @@
 import * as React from 'react';
-import { useState} from 'react';
+import { useState,useEffect} from 'react';
 import {Button, View, StyleSheet, Linking} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import {watchlistDataModel} from '../dataModel/Watchlist'
+import watchlistLocalStorage from '../localStorage/watchlist'
 export default topright = (props) => {
-    const [title, Settitle] = useState(true);
     if(props.name === "home"){
+        const [title, Settitle] = useState(true);
         return (
             <Button onPress={() => {
                 Settitle(!title);
@@ -16,8 +18,20 @@ export default topright = (props) => {
         )
     }
     else if(props.name === "detail"){
-        const clickLocal = () =>{
-            alert(props.title);
+        const [isLocal, SetisLocal] = useState(false);
+        useEffect(async ()=>{
+            let data = await watchlistLocalStorage.checkContainItem(props.id,props.type,props.poster_path);
+            SetisLocal(data);
+        },[isLocal])
+        const clickLocal = async () =>{
+            if(isLocal){
+                await watchlistLocalStorage.clearItem(props.id,props.type,props.poster_path);
+                SetisLocal(false);
+            }
+            else{
+                await watchlistLocalStorage.addItemToTail(props.id,props.type,props.poster_path);
+                SetisLocal(true);
+            }
         }
         const clickFacebook = () =>{
             let fblink = 'https://www.themoviedb.org/' + props.type + '/' + props.id; 
@@ -33,13 +47,13 @@ export default topright = (props) => {
                 console.error('An error occurred', err),
             );
         }
-        
+        let localIcon = isLocal ? 'bookmark':'bookmark-outline';
         return (
             <View style = {styles.btncontainer}>
                 <TouchableOpacity 
                     style={styles.btn}
                     onPress = {()=> clickLocal()}>
-                    <Ionicons name = "bookmark-outline" size={25} color = "black"></Ionicons>
+                    <Ionicons name = {localIcon} size={25} color = "black"></Ionicons>
                 </TouchableOpacity>
                 <TouchableOpacity 
                     style={styles.btn}
