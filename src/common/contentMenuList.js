@@ -3,6 +3,7 @@ import {useState, useEffect,useRef, useCallback} from 'react';
 import { View, Text, Image,TouchableOpacity,StyleSheet, FlatList,Linking} from 'react-native';
 import watchlistLocalStorage from '../localStorage/watchlist'
 import { useFocusEffect } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 import {Dimensions} from 'react-native';
 import {ContextMenuView} from "react-native-ios-context-menu"
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -11,8 +12,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import {watchlistDataModel} from '../dataModel/Watchlist'
 global.deviceWidth = Dimensions.get('window').width
 global.deviceHeight = Dimensions.get('window').height
-global.bookmarkIncon = "";
-global.bookmarkTitle = "222";
 export default contentMenuList = (props) => {
 
     const [isLocalData, SetisLocalData] = useState([]);
@@ -28,7 +27,9 @@ export default contentMenuList = (props) => {
     );
     useEffect(async()=>{
         try{
-            updateLocalData();
+            let data = await watchlistLocalStorage.checkContainItemArr(watchlistDataModel(props.data));
+            SetisLocalData(data);
+            SetloadFlag(true);
         }catch(e){
             alert(e)
         }
@@ -54,9 +55,35 @@ export default contentMenuList = (props) => {
             case 'local':
                 if(!isLocalData[index]){
                     await watchlistLocalStorage.addItemToTail(item.id,item.type,item.poster_path);
+                    let notice = item.title + ' was added to Watchlist' 
+                    Toast.show({
+                        type: 'success',
+                        position: 'bottom',
+                        text1: notice,
+                        visibilityTime: 4000,
+                        autoHide: true,
+                        topOffset: 150,
+                        bottomOffset: 95,
+                        onShow: () => {},
+                        onHide: () => {},
+                        onPress: () => {}
+                      });
                 }
                 else{
                     await watchlistLocalStorage.clearItem(item.id,item.type,item.poster_path);
+                    let notice = item.title + ' was removed from Watchlist' 
+                    Toast.show({
+                        type: 'success',
+                        position: 'bottom',
+                        text1: notice,
+                        visibilityTime: 4000,
+                        autoHide: true,
+                        topOffset: 150,
+                        bottomOffset: 95,
+                        onShow: () => {},
+                        onHide: () => {},
+                        onPress: () => {}
+                      });
                 }
                 SetloadFlag(flag => !flag);
                 break;
@@ -77,10 +104,6 @@ export default contentMenuList = (props) => {
                 break;
             };
     }
-    // const updatelocalData = async (item) =>{
-    //     let isContainLocal = await watchlistLocalStorage.checkContainItem(item.id,item.type, item.poster_path);
-    //     SetisLocalData(isContainLocal);
-    // }
     const isInIcon = Image.resolveAssetSource(Ionicons.getImageSourceSync('bookmark',60,'black'));
     const notInIcon = Image.resolveAssetSource(Ionicons.getImageSourceSync('bookmark-outline',60,'black'));
     const renderItemMovieOrTV = ({item,index}) =>{
@@ -134,6 +157,7 @@ export default contentMenuList = (props) => {
     }
         return (
             <View>
+                
                 <FlatList
                     data = {props.data}
                     renderItem = {renderItemMovieOrTV}

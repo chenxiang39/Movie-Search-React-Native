@@ -7,12 +7,14 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import SplashScreen from 'react-native-splash-screen'
+import Toast , {BaseToast} from 'react-native-toast-message';
 import home from './src/screen/home'
 import search from './src/screen/search'
 import watchlist from './src/screen/watchlist'
 import detail from './src/screen/detail'
 import review from './src/screen/review'
 import loading from './src/screen/loading'
+import ToastCustom from './src/common/toastCustom'
 const DetailStack = createStackNavigator();
 function DetailStackScreen(){
   return (
@@ -94,6 +96,20 @@ export default function App() {
   useEffect(async ()=>{
       await SplashScreen.hide();
   })
+  const toastConfig = {
+    success:({text1})=>{
+      <BaseToast
+      style={{ borderLeftColor: 'pink' }}
+      contentContainerStyle={{ paddingHorizontal: 15 }}
+      text1Style={{
+        fontSize: 15,
+        fontWeight: 'semibold'
+      }}
+      text1={text1}
+      text2={null}
+    />
+    }
+  }
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -114,6 +130,7 @@ export default function App() {
         <Tab.Screen name="Home" component={HomeStackScreen} />
         <Tab.Screen name="WatchList" component={WatchlistStackScreen} />
       </Tab.Navigator>
+      <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)} />
     </NavigationContainer>
   );
 }

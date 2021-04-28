@@ -48,12 +48,13 @@ export default topright = (props) => {
             );
         }
         let localIcon = isLocal ? 'bookmark':'bookmark-outline';
+        let localColor = isLocal ? 'rgb(48,123,246)':'black';
         return (
             <View style = {styles.btncontainer}>
                 <TouchableOpacity 
                     style={styles.btn}
                     onPress = {()=> clickLocal()}>
-                    <Ionicons name = {localIcon} size={25} color = "black"></Ionicons>
+                    <Ionicons name = {localIcon} size={25} color = {localColor}></Ionicons>
                 </TouchableOpacity>
                 <TouchableOpacity 
                     style={styles.btn}
