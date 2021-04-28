@@ -77,7 +77,7 @@ const WatchlistStack = createStackNavigator();
 function WatchlistStackScreen() {
   return (
     <WatchlistStack.Navigator>
-      <WatchlistStack.Screen name="WatchList" component={watchlist} />
+      <WatchlistStack.Screen name="Watchlist" component={watchlist} />
       <HomeStack.Screen 
         name="Details" 
         component={DetailStackScreen} 
@@ -97,7 +97,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName = "Home"
+        initialRouteName = "WatchList"
         screenOptions={({route}) => ({
           tabBarIcon: ({focused, color, size}) => {
             if (route.name === 'Search') {

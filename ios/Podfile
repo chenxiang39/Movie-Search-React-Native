@@ -15,6 +15,8 @@ target 'USC_Films_HW9' do
 
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+
   target 'USC_Films_HW9Tests' do
     inherit! :complete
     # Pods for testing

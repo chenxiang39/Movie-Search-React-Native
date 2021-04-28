@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {useState} from 'react';
 import { View, Text, Image,TouchableOpacity,StyleSheet, FlatList,Linking} from 'react-native';
+import watchlistLocalStorage from '../localStorage/watchlist'
 import {Dimensions} from 'react-native';
 import {ContextMenuView} from "react-native-ios-context-menu"
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -30,10 +31,12 @@ export default horizonlist = (props) => {
             })
         }
     }
-    const contentMenuBtnFun = (e,item) =>{
+    const contentMenuBtnFun = async (e,item) =>{
         switch (e.actionKey) {
             case 'local':
-                alert('saving...');
+                // await watchlistLocalStorage.addItemToTail(item.id,item.type,item.poster_path);
+
+                await watchlistLocalStorage.loadItem();
                 break;
 
             case 'facebook':
