@@ -2,12 +2,8 @@ import * as React from 'react';
 import { useRef,useLayoutEffect, useState, useEffect} from 'react';
 import { View, Text, Animated, StyleSheet, Linking} from 'react-native';
 import Topright from '../common/topright'
-import {tvTopCarousel, movieTopCarousel} from '../dataModel/TopCarousel'
-import {tvHorizonlist, movieHorizonlist} from '../dataModel/Horizonlist'
 import Carousel from '../common/carousel'
 import Horizonlist from '../common/horizonlist'
-import Loading from '../common/loading'
-import {ip} from '../IpAddress.json'
 import {Dimensions} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 global.deviceWidth = Dimensions.get('window').width
