@@ -1,111 +1,18 @@
 import * as React from 'react';
-import {useState} from 'react';
 import { View, Text, Image,TouchableOpacity,StyleSheet, FlatList,Linking} from 'react-native';
-import watchlistLocalStorage from '../localStorage/watchlist'
 import {Dimensions} from 'react-native';
-import {ContextMenuView} from "react-native-ios-context-menu"
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import Entypo from 'react-native-vector-icons/Entypo'
-import Ionicons from 'react-native-vector-icons/Ionicons'
 global.deviceWidth = Dimensions.get('window').width
 global.deviceHeight = Dimensions.get('window').height
 export default horizonlist = (props) => {
-    const [modelVisible, SetmodelVisible] = useState(false)
-    const bookmarkIncon = Image.resolveAssetSource(Ionicons.getImageSourceSync('bookmark-outline',60,'black'))
-    const facebookIcon = Image.resolveAssetSource(FontAwesome.getImageSourceSync('facebook-f',60,'black'));
-    const twitterIcon = Image.resolveAssetSource(Entypo.getImageSourceSync('twitter',60,'black'));
     const ClickFun = (item) =>{
-        if(props.route.name === "USC Films"){
-            props.navigation.navigate('Details',{
-                screen: 'detail',
-                params:{
-                    id:item.id,
-                    type:item.type,
-                }
-            })
-        }
-        else if(props.route.name === "detail"){
-            props.navigation.push('detail',{
-                id:item.id,
-                type:item.type
-            })
-        }
-    }
-    const contentMenuBtnFun = async (e,item) =>{
-        switch (e.actionKey) {
-            case 'local':
-                // await watchlistLocalStorage.addItemToTail(item.id,item.type,item.poster_path);
-
-                await watchlistLocalStorage.loadItem();
-                break;
-
-            case 'facebook':
-                let fblink = 'https://www.themoviedb.org/' + item.type + '/' + item.id; 
-                let facebooklink = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(fblink)
-                Linking.openURL(facebooklink).catch((err) =>
-                    console.error('An error occurred', err),
-                );
-                break;
-            case 'twitter':
-                let twlink = 'Check out this link:\nhttps://www.themoviedb.org/' + item.type + '/' + item.id + ' #CSCI571USCFilms'; 
-                let twitterlink = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(twlink)
-                Linking.openURL(twitterlink).catch((err) =>
-                    console.error('An error occurred', err),
-                );
-                break;
-            };
-    }
-    const renderItemMovieOrTV = ({item,index}) =>{
-        return (
-            <View style = {styles.container}>
-                <ContextMenuView
-                    onPressMenuItem={({nativeEvent})=>contentMenuBtnFun(nativeEvent,item)}
-                    previewConfig={{
-                        backgroundColor: 'white'
-                      }}
-                    menuConfig={{
-                        menuTitle: '',
-                        menuItems: [{
-                        actionKey  : 'local',
-                        actionTitle: 'local',
-                        icon: {
-                            iconType : 'REQUIRE',
-                            iconValue: bookmarkIncon,
-                        }
-                        }, {
-                        actionKey  : 'facebook',
-                        actionTitle: 'Share On FaceBook',
-                        icon: {
-                            iconType : 'REQUIRE',
-                            iconValue: facebookIcon,
-                        }
-                        }, {
-                        actionKey  : 'twitter',
-                        actionTitle: 'Share On Twitter',
-                        icon: {
-                            iconType : 'REQUIRE',
-                            iconValue: twitterIcon,
-                        }
-                        }],
-                    }}
-                    >
-                <TouchableOpacity style={styles.container1} 
-                    onPress = {()=>ClickFun(item)}
-                >
-                    <Image style={styles.pic} source = {{uri:item.poster_path}} />
-                    <Text style={styles.title}>{item.title}</Text>
-                    <Text style={styles.time}>({item.date})</Text>
-                    <View style={styles.space}></View>
-                </TouchableOpacity>
-                </ContextMenuView>
-                {/* </ContextMenu> */}
-               <View style = {styles.space3}></View>
-            </View>
-        )
+        props.navigation.push('detail',{
+            id:item.id,
+            type:item.type
+        })
     }
     const renderCastItem = ({item,index}) =>{
         return (
-            <View  style={styles.container2}>
+            <View  style={styles.container}>
                 <Image style={styles.picRound} source = {{uri:item.profile_path}} />
                 <Text style={styles.name}>{item.name}</Text>
                 <View style={styles.space2}></View>
@@ -114,7 +21,7 @@ export default horizonlist = (props) => {
     }
     const renderRecommendedItem = ({item,index}) =>{
         return (
-            <TouchableOpacity style={[styles.container3]} 
+            <TouchableOpacity style={[styles.container1]} 
                 onPress = {()=>ClickFun(item)}
             >
                 <Image style={styles.pic} source = {{uri:item.poster_path}} />
@@ -122,20 +29,7 @@ export default horizonlist = (props) => {
             </TouchableOpacity>
         )
     }
-    if(props.name === "movieOrtv"){
-        return (
-            <View>
-                <FlatList
-                    data = {props.data}
-                    renderItem = {renderItemMovieOrTV}
-                    keyExtractor = {item => item.id}
-                    horizontal={true}
-                >
-                </FlatList>
-            </View>
-        )
-    }
-    else if(props.name === "cast"){
+    if(props.name === "cast"){
         return (
             <View>
                 <FlatList
@@ -171,21 +65,11 @@ export default horizonlist = (props) => {
 const styles = StyleSheet.create({
     container:{
         display:'flex',
-        flexDirection:'row'
-    },
-    container1:{
-        display:'flex',
-        flexDirection:'column',
-        width:(0.92 * deviceWidth - 0.2 * deviceWidth)/3,
-       
-    },
-    container2:{
-        display:'flex',
         flexDirection:'column',
         width: 70,
         marginRight:20
     },
-    container3:{
+    container1:{
         display:'flex',
         flexDirection:'column',
         width:(0.92 * deviceWidth - 0.2 * deviceWidth)/3,
@@ -194,19 +78,6 @@ const styles = StyleSheet.create({
     pic: {
         height:150,
         borderRadius:8
-    },
-    title:{
-        marginTop:5,
-        textAlign:'center',
-        lineHeight:16,
-        color:'black',
-        fontSize:12,
-        fontWeight:'bold'
-    },
-    time:{
-        textAlign:'center',
-        color:'rgb(100,100,100)',
-        fontSize:12,
     },
     picRound:{
         borderRadius:70,
@@ -226,7 +97,4 @@ const styles = StyleSheet.create({
     space2:{
         height:10
     },
-    space3:{
-        width:30,
-    }
 }); 

@@ -3,9 +3,11 @@ import { useRef,useLayoutEffect, useState, useEffect} from 'react';
 import { View, Text, Animated, StyleSheet, Linking} from 'react-native';
 import Topright from '../common/topright'
 import Carousel from '../common/carousel'
-import Horizonlist from '../common/horizonlist'
+import ContentMenuList from '../common/contentMenuList'
 import {Dimensions} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import {watchlistDataModel} from '../dataModel/Watchlist'
+import watchlistLocalStorage from '../localStorage/watchlist'
 global.deviceWidth = Dimensions.get('window').width
 global.deviceHeight = Dimensions.get('window').height
 export default  home = ({navigation,route}) => {
@@ -46,7 +48,7 @@ export default  home = ({navigation,route}) => {
       });
     }, [navigation]); 
 
-    useEffect(() =>{
+    useEffect(async () =>{
       try{
         if(isMovie){
           SettopCarouselData(movtopCarouselData);
@@ -92,9 +94,9 @@ export default  home = ({navigation,route}) => {
                 <Carousel data = {topCarouselData} navigation = {navigation} sliderWidth = {0.92 * deviceWidth} itemWidth = {0.92 * deviceWidth}></Carousel>
             </View>
             <Text style = {[styles.blackbold,styles.CarouselTitle]}>TopRated</Text>
-            <Horizonlist name = "movieOrtv" data = {topRateData} navigation = {navigation} route = {route}></Horizonlist>
+            <ContentMenuList data = {topRateData} navigation = {navigation} route = {route}></ContentMenuList>
             <Text style = {[styles.blackbold,styles.CarouselTitle, styles.SecondTitle]}>Popular</Text>
-            <Horizonlist name = "movieOrtv" data = {popularData} navigation = {navigation} route = {route}></Horizonlist>
+            <ContentMenuList data = {popularData} navigation = {navigation} route = {route}></ContentMenuList>
             <View style = {styles.bottombtn}>
               <View style = {styles.space}></View>
               <TouchableOpacity onPress = {clickBottomFun}>

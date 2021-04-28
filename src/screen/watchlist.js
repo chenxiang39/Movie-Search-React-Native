@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { useRef,useLayoutEffect, useState, useEffect} from 'react';
+import {useLayoutEffect, useState, useEffect,useCallback} from 'react';
 import { View, Text, StyleSheet,Dimensions,Image} from 'react-native';
 import watchlistLocalStorage from '../localStorage/watchlist';
+import { useFocusEffect } from '@react-navigation/native';
 import watchlistDataModel from '../dataModel/Watchlist'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 global.deviceWidth = Dimensions.get('window').width
@@ -9,11 +10,19 @@ global.deviceHeight = Dimensions.get('window').height
 export default  watchlist = ({navigation, route}) => {
     const [init,Setinit] = useState(false);
     const [watchlistData, SetwatchlistData] = useState([]);
-    useEffect(async ()=>{
+    useFocusEffect(
+      useCallback(() => {
+        fetchData();
+        return () => {
+          Setinit(false);
+        };
+      }, [])
+    );
+    const fetchData = async () =>{
       let data = await watchlistLocalStorage.loadItem();
       SetwatchlistData(data);
       Setinit(true);
-    },[watchlistData])
+    }
     useLayoutEffect(() => {
       navigation.setOptions({
          headerShown:false
@@ -30,11 +39,11 @@ export default  watchlist = ({navigation, route}) => {
     }
     const renderItem = () =>{
         let arr = [];
-        for(let i = 0; i < 6; i++){
+        for(let i = 0; i < watchlistData.length; i++){
            let cur = (
-             <View style = {styles.itemContainer} key = {watchlistData[0].id + watchlistData[0].type + i}>
-                 <TouchableOpacity onPress = {()=>itemClickFun(watchlistData[0])}>
-                    <Image style ={styles.Img} source={{uri:watchlistData[0].url}}/>
+             <View style = {styles.itemContainer} key = {watchlistData[i].id + watchlistData[i].type}>
+                 <TouchableOpacity onPress = {()=>itemClickFun(watchlistData[i])}>
+                    <Image style ={styles.Img} source={{uri:watchlistData[i].url}}/>
                  </TouchableOpacity>
                  <View style={styles.space}></View>
              </View>

@@ -9,7 +9,14 @@ const storage = new Storage({
   defaultExpires: null,
   enableCache: true, 
 });
-
+const JSONTransfer = (command,OBJ)=>{
+    if(command == 'save'){
+        return JSON.stringify(OBJ);
+    }
+    else if(command == 'get'){
+        return JSON.parse(OBJ);
+    }
+}
 const createArr = (id,type,url) =>{
     let curArr = [];
     let curOBJ = {
@@ -20,7 +27,7 @@ const createArr = (id,type,url) =>{
     curArr.push(curOBJ);
     storage.save({
         key:'watchlist',
-        data: JSON.stringify(curArr)
+        data: JSONTransfer('save',curArr)
     })
 }
 const clearAllItem = () =>{
@@ -28,12 +35,48 @@ const clearAllItem = () =>{
         key: 'watchlist',
     });
 }
+const clearItem = async (id,type,url) =>{
+    let curArr = await storage.load({key:'watchlist'});
+    curArr = JSONTransfer('get',curArr);
+    for(let i = 0; i < curArr.length; i++){
+        if(curArr[i].id === id && curArr[i].type === type){
+            curArr.splice(i,1);
+        }
+    }
+    await storage.save({
+        key:'watchlist',
+        data: JSONTransfer('save',curArr)
+    })
+    return;
+}
+const checkContainItemArr = async (dataArr) =>{
+    let curArr = await storage.load({key:'watchlist'});
+    curArr = JSONTransfer('get',curArr);
+    let data = [];
+    let flag = false; 
+    if(dataArr.length !== 0 && !!curArr){
+        for(let i = 0; i < dataArr.length; i++){
+            for(let j = 0; j < curArr.length; j++){
+                if(dataArr[i].id === curArr[j].id && dataArr[i].type === curArr[j].type){
+                    data.push(true);
+                    flag = true;
+                    break;
+                }
+            } 
+            if(!flag){
+                data.push(false);
+            }
+            flag = false;
+        }
+    }
+    return data;
+}
 const checkContainItem = async (id,type,url) =>{
     try{
         let curArr = await storage.load({key:'watchlist'});
-        curArr = JSON.stringify(curArr);
+        curArr = JSONTransfer('get',curArr);
         for(let i = 0; i < curArr.length; i++){
-            if(curArr[i].id === id){
+            if(curArr[i].id === id && curArr[i].type === type){
                 return true;
             }
         }
@@ -42,14 +85,18 @@ const checkContainItem = async (id,type,url) =>{
         return false;
     }
 }
+const checkItemInternal = (id,type,url, curArr) =>{
+    for(let i = 0; i < curArr.length; i++){
+        if(curArr[i].id === id && curArr[i].type === type){
+            return true;
+        }
+    }
+    return false;
+}
 const moveItemTo = async (id, type, url, index) =>{
     try{
-        if(!await checkContainItem(id, type, url)){
-            await addItemToTail(id,type,url);
-            return;
-        }
         let curArr = await storage.load({key:'watchlist'});
-        curArr = JSON.stringify(curArr);
+        curArr = JSONTransfer('get',curArr);
         for(let i = 0; i < curArr.length; i++){
             if(curArr[i].id === id){
                 let temp = {
@@ -64,7 +111,7 @@ const moveItemTo = async (id, type, url, index) =>{
                 
                 await storage.save({
                     key:'watchlist',
-                    data: JSON.stringify(curArr)
+                    data: JSONTransfer('save',curArr)
                 })
                 return;
             }
@@ -76,9 +123,9 @@ const moveItemTo = async (id, type, url, index) =>{
 const addItemToTail = async (id,type,url) => {
     try{
         let curArr = await storage.load({key:'watchlist'});
-        curArr = JSON.parse(curArr);
-        if(checkContainItem(id,type,url)){
-
+        curArr = JSONTransfer('get',curArr);
+        if(checkItemInternal(id,type,url,curArr)){
+            
         }
         else{
             let curOBJ = {
@@ -89,10 +136,11 @@ const addItemToTail = async (id,type,url) => {
             curArr.push(curOBJ);
             storage.save({
                 key:'watchlist',
-                data: JSON.stringify(curArr)
+                data: JSONTransfer('save',curArr)
             })
         }
     }catch(e){
+        alert(e);
         createArr(id,type,url);
     }
 }
@@ -100,7 +148,7 @@ const addItemToTail = async (id,type,url) => {
 const loadItem = async () =>{
     try{
         let curArr = await storage.load({key:'watchlist'});
-        curArr = JSON.parse(curArr);
+        curArr = JSONTransfer('get',curArr);
         return curArr;
     }catch(e){
         let curArr = [];
@@ -109,8 +157,10 @@ const loadItem = async () =>{
 }
 export default watchlistLocalStorage = {
     checkContainItem : checkContainItem,
+    checkContainItemArr : checkContainItemArr,
     addItemToTail : addItemToTail,
     moveItemTo:moveItemTo,
     clearAllItem : clearAllItem,
+    clearItem:clearItem,
     loadItem:loadItem
 }
