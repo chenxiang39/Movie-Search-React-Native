@@ -28,7 +28,6 @@ export default detail = ({navigation,route}) => {
       outputRange:['rgba(255,255,255,1)','rgba(255,255,255,0.8)','rgba(255,255,255,0.6)'],
       extrapolate:'clamp'
     })
-    // const [topRateData, SettopRateData] = useState([]);
     useLayoutEffect(() => {
       navigation.setOptions({
         headerRight: () => (

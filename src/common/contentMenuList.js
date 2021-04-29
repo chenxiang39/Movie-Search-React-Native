@@ -10,6 +10,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import {watchlistDataModel} from '../dataModel/Watchlist'
+import {ToastCustomShow} from '../common/toastCustom'
 global.deviceWidth = Dimensions.get('window').width
 global.deviceHeight = Dimensions.get('window').height
 export default contentMenuList = (props) => {
@@ -57,28 +58,12 @@ export default contentMenuList = (props) => {
                 if(!isLocalData[index]){
                     await watchlistLocalStorage.addItemToTail(item.id,item.type,item.poster_path);
                     let notice = item.title + ' was added to Watchlist' 
-                    Toast.show({
-                        type: 'success',
-                        position: 'bottom',
-                        text1: notice,
-                        visibilityTime: 4000,
-                        autoHide: true,
-                        topOffset: 30,
-                        bottomOffset: 95,
-                    });
+                    Toast.show(ToastCustomShow(notice));
                 }
                 else{
                     await watchlistLocalStorage.clearItem(item.id,item.type,item.poster_path);
                     let notice = item.title + ' was removed from Watchlist' 
-                    Toast.show({
-                        type: 'success',
-                        position: 'bottom',
-                        text1: notice,
-                        visibilityTime: 4000,
-                        autoHide: true,
-                        topOffset: 30,
-                        bottomOffset: 95,
-                    });
+                    Toast.show(ToastCustomShow(notice));
                 }
                 SetloadFlag(flag => !flag);
                 break;

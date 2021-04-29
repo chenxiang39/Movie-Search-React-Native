@@ -14,7 +14,7 @@ import watchlist from './src/screen/watchlist'
 import detail from './src/screen/detail'
 import review from './src/screen/review'
 import loading from './src/screen/loading'
-import ToastCustom from './src/common/toastCustom'
+import {ToastCustom} from './src/common/toastCustom'
 const DetailStack = createStackNavigator();
 function DetailStackScreen(){
   return (

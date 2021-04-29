@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { useState,useEffect} from 'react';
+import { useState,useEffect,useCallback} from 'react';
 import {Button, View, StyleSheet, Linking} from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import {watchlistDataModel} from '../dataModel/Watchlist'
+import Toast from 'react-native-toast-message';
 import watchlistLocalStorage from '../localStorage/watchlist'
+import {ToastCustomShow} from '../common/toastCustom'
 export default topright = (props) => {
     if(props.name === "home"){
         const [title, Settitle] = useState(true);
@@ -19,19 +21,34 @@ export default topright = (props) => {
     }
     else if(props.name === "detail"){
         const [isLocal, SetisLocal] = useState(false);
+        useFocusEffect(
+            useCallback(() => {
+              updateLocalData();
+              return () => {
+                
+              };
+            }, [])
+          );
         useEffect(async ()=>{
-            let data = await watchlistLocalStorage.checkContainItem(props.id,props.type,props.url);
-            SetisLocal(data);
+            updateLocalData();
         },[isLocal,props])
         const clickLocal = async () =>{
             if(isLocal){
                 await watchlistLocalStorage.clearItem(props.id,props.type,props.url);
+                let notice = props.title + ' was removed from Watchlist' 
+                Toast.show(ToastCustomShow(notice));
                 SetisLocal(false);
             }
             else{
                 await watchlistLocalStorage.addItemToTail(props.id,props.type,props.url);
+                let notice = props.title + ' was added to Watchlist' 
+                Toast.show(ToastCustomShow(notice));
                 SetisLocal(true);
             }
+        }
+        const updateLocalData = async () =>{
+            let data = await watchlistLocalStorage.checkContainItem(props.id,props.type,props.url);
+            SetisLocal(data);
         }
         const clickFacebook = () =>{
             let fblink = 'https://www.themoviedb.org/' + props.type + '/' + props.id; 
