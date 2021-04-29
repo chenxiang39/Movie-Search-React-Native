@@ -13,10 +13,9 @@ import {watchlistDataModel} from '../dataModel/Watchlist'
 global.deviceWidth = Dimensions.get('window').width
 global.deviceHeight = Dimensions.get('window').height
 export default contentMenuList = (props) => {
-
     const [isLocalData, SetisLocalData] = useState([]);
     const [loadFlag, SetloadFlag] = useState(false);
-
+    const [canClick, SetcanClick] = useState(true);
     useFocusEffect(
         useCallback(() => {
           updateLocalData();
@@ -33,7 +32,7 @@ export default contentMenuList = (props) => {
         }catch(e){
             alert(e)
         }
-    },[loadFlag])
+    },[loadFlag,canClick])
     const updateLocalData = async () =>{
         let data = await watchlistLocalStorage.checkContainItemArr(watchlistDataModel(props.data));
         SetisLocalData(data);
@@ -42,13 +41,15 @@ export default contentMenuList = (props) => {
     const facebookIcon = Image.resolveAssetSource(FontAwesome.getImageSourceSync('facebook-f',60,'black'));
     const twitterIcon = Image.resolveAssetSource(Entypo.getImageSourceSync('twitter',60,'black'));
     const ClickFun = (item) =>{
-        props.navigation.navigate('Details',{
-            screen: 'detail',
-            params:{
-                id:item.id,
-                type:item.type,
-            }
-        })
+        if(canClick){
+            props.navigation.navigate('Details',{
+                screen: 'detail',
+                params:{
+                    id:item.id,
+                    type:item.type,
+                }
+            })
+        }
     }
     const contentMenuBtnFun = async (e,item,index) =>{
         switch (e.actionKey) {
@@ -62,12 +63,9 @@ export default contentMenuList = (props) => {
                         text1: notice,
                         visibilityTime: 4000,
                         autoHide: true,
-                        topOffset: 150,
+                        topOffset: 30,
                         bottomOffset: 95,
-                        onShow: () => {},
-                        onHide: () => {},
-                        onPress: () => {}
-                      });
+                    });
                 }
                 else{
                     await watchlistLocalStorage.clearItem(item.id,item.type,item.poster_path);
@@ -78,12 +76,9 @@ export default contentMenuList = (props) => {
                         text1: notice,
                         visibilityTime: 4000,
                         autoHide: true,
-                        topOffset: 150,
+                        topOffset: 30,
                         bottomOffset: 95,
-                        onShow: () => {},
-                        onHide: () => {},
-                        onPress: () => {}
-                      });
+                    });
                 }
                 SetloadFlag(flag => !flag);
                 break;
@@ -104,6 +99,12 @@ export default contentMenuList = (props) => {
                 break;
             };
     }
+    const disableClick = () =>{
+        SetcanClick(false);
+    }
+    const enableClick = () =>{
+        SetcanClick(true);
+    }
     const isInIcon = Image.resolveAssetSource(Ionicons.getImageSourceSync('bookmark',60,'black'));
     const notInIcon = Image.resolveAssetSource(Ionicons.getImageSourceSync('bookmark-outline',60,'black'));
     const renderItemMovieOrTV = ({item,index}) =>{
@@ -111,6 +112,8 @@ export default contentMenuList = (props) => {
             <View style = {styles.container}>
                 <ContextMenuView
                     lazyPreview = {false}
+                    onMenuWillShow = {()=> disableClick()}
+                    onMenuWillHide = {()=> enableClick()}
                     // onMenuDidShow = {()=>updatelocalData(item)}
                     onPressMenuItem={({nativeEvent})=>contentMenuBtnFun(nativeEvent,item,index)}
                     previewConfig={{
@@ -156,8 +159,7 @@ export default contentMenuList = (props) => {
         )
     }
         return (
-            <View>
-                
+            <View>     
                 <FlatList
                     data = {props.data}
                     renderItem = {renderItemMovieOrTV}

@@ -7,7 +7,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import SplashScreen from 'react-native-splash-screen'
-import Toast , {BaseToast} from 'react-native-toast-message';
+import Toast, {BaseToast} from 'react-native-toast-message';
 import home from './src/screen/home'
 import search from './src/screen/search'
 import watchlist from './src/screen/watchlist'
@@ -97,18 +97,9 @@ export default function App() {
       await SplashScreen.hide();
   })
   const toastConfig = {
-    success:({text1})=>{
-      <BaseToast
-      style={{ borderLeftColor: 'pink' }}
-      contentContainerStyle={{ paddingHorizontal: 15 }}
-      text1Style={{
-        fontSize: 15,
-        fontWeight: 'semibold'
-      }}
-      text1={text1}
-      text2={null}
-    />
-    }
+    success: ({ text1, ...rest }) => (
+        <ToastCustom text = {text1} other = {rest}></ToastCustom>
+    ),
   }
   return (
     <NavigationContainer>

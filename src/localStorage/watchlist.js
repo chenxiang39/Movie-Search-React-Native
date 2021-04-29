@@ -36,40 +36,52 @@ const clearAllItem = () =>{
     });
 }
 const clearItem = async (id,type,url) =>{
-    let curArr = await storage.load({key:'watchlist'});
-    curArr = JSONTransfer('get',curArr);
-    for(let i = 0; i < curArr.length; i++){
-        if(curArr[i].id === id && curArr[i].type === type){
-            curArr.splice(i,1);
+    try{
+        let curArr = await storage.load({key:'watchlist'});
+        curArr = JSONTransfer('get',curArr);
+        for(let i = 0; i < curArr.length; i++){
+            if(curArr[i].id === id && curArr[i].type === type){
+                curArr.splice(i,1);
+            }
         }
+        await storage.save({
+            key:'watchlist',
+            data: JSONTransfer('save',curArr)
+        })
+        return;
+    }catch(e){
+        return;
     }
-    await storage.save({
-        key:'watchlist',
-        data: JSONTransfer('save',curArr)
-    })
-    return;
 }
 const checkContainItemArr = async (dataArr) =>{
-    let curArr = await storage.load({key:'watchlist'});
-    curArr = JSONTransfer('get',curArr);
-    let data = [];
-    let flag = false; 
-    if(dataArr.length !== 0 && !!curArr){
-        for(let i = 0; i < dataArr.length; i++){
-            for(let j = 0; j < curArr.length; j++){
-                if(dataArr[i].id === curArr[j].id && dataArr[i].type === curArr[j].type){
-                    data.push(true);
-                    flag = true;
-                    break;
+    try{
+        let curArr = await storage.load({key:'watchlist'});
+        curArr = JSONTransfer('get',curArr);
+        let data = [];
+        let flag = false; 
+        if(dataArr.length !== 0 && !!curArr){
+            for(let i = 0; i < dataArr.length; i++){
+                for(let j = 0; j < curArr.length; j++){
+                    if(dataArr[i].id === curArr[j].id && dataArr[i].type === curArr[j].type){
+                        data.push(true);
+                        flag = true;
+                        break;
+                    }
+                } 
+                if(!flag){
+                    data.push(false);
                 }
-            } 
-            if(!flag){
-                data.push(false);
+                flag = false;
             }
-            flag = false;
         }
+        return data;
+    }catch(e){
+        let dataTemp = [];
+        for(let i = 0; i < dataArr.length; i++){
+            dataTemp.push(false);
+        }
+        return dataTemp;
     }
-    return data;
 }
 const checkContainItem = async (id,type,url) =>{
     try{
@@ -140,7 +152,6 @@ const addItemToTail = async (id,type,url) => {
             })
         }
     }catch(e){
-        alert(e);
         createArr(id,type,url);
     }
 }

@@ -20,16 +20,16 @@ export default topright = (props) => {
     else if(props.name === "detail"){
         const [isLocal, SetisLocal] = useState(false);
         useEffect(async ()=>{
-            let data = await watchlistLocalStorage.checkContainItem(props.id,props.type,props.poster_path);
+            let data = await watchlistLocalStorage.checkContainItem(props.id,props.type,props.url);
             SetisLocal(data);
-        },[isLocal])
+        },[isLocal,props])
         const clickLocal = async () =>{
             if(isLocal){
-                await watchlistLocalStorage.clearItem(props.id,props.type,props.poster_path);
+                await watchlistLocalStorage.clearItem(props.id,props.type,props.url);
                 SetisLocal(false);
             }
             else{
-                await watchlistLocalStorage.addItemToTail(props.id,props.type,props.poster_path);
+                await watchlistLocalStorage.addItemToTail(props.id,props.type,props.url);
                 SetisLocal(true);
             }
         }

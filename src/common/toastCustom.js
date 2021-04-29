@@ -3,25 +3,35 @@ import Carousel from 'react-native-snap-carousel';
 import { View, Text,StyleSheet} from 'react-native';
 import Toast, { BaseToast } from 'react-native-toast-message';
 export default toastCustom = (props) => {
-    alert("custom")
     return (
-        <BaseToast
-        style={{ borderLeftColor: 'pink',backgroundColor:'red' }}
-        contentContainerStyle={{ paddingHorizontal: 15 }}
-        text1Style={{
-          fontSize: 15,
-          fontWeight: 'semibold'
-        }}
-        text1={text1}
-      />
+      <View style={styles.container}>
+        <Text style={styles.text}>{props.text}</Text>
+     </View>
     )
 }
 
 const styles = StyleSheet.create({
     container:{
-        width:120,
-        height:60,
+        display:'flex',
+        padding:10,
+        width:300,
+        borderRadius:60,
         backgroundColor:'rgb(142,142,146)',
-        color:'white'
     },
+    container2:{
+      display:'flex',
+      padding:0,
+      width:300,
+      borderRadius:60,
+      backgroundColor:'rgb(142,142,146)',
+    },
+    rightContainer:{
+      backgroundColor:'yellow',
+      display:'none'
+    },
+    text:{
+      fontSize: 15,
+      color:'white',
+      textAlign:'center'
+    }
 }); 

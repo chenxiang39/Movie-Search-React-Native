@@ -32,7 +32,7 @@ export default detail = ({navigation,route}) => {
     useLayoutEffect(() => {
       navigation.setOptions({
         headerRight: () => (
-          <Topright name = "detail" type={type} id={id} title={detailData.title}></Topright>
+          <Topright name = "detail" type={type} id={id} title={detailData.title} url={detailData.poster_path}></Topright>
         ),
         headerStyle :{
           backgroundColor : headerbk
@@ -42,7 +42,7 @@ export default detail = ({navigation,route}) => {
         },
         headerTitle:'Back'
       });
-    }, [navigation]); 
+    }, [navigation,detailData]); 
 
     useEffect(async()=>{
       try{

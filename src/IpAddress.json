@@ -1,5 +1,5 @@
 {
     "ip":{
-       "node": "http://127.0.0.1:8080/api"
+       "node": "http://csci571hw9nodejs-env.eba-ni7r2pew.us-west-1.elasticbeanstalk.com/api"
     }
 }
