@@ -44,11 +44,12 @@ export default verticallist = (props) => {
         return review;
     }
     const renderSearchItem = ({item, index}) =>{
+        const media = item.media_type == 'movie' ? "MOVIE" : "TV SHOW";
         return (
             <TouchableOpacity style={[styles.containerSearch]} 
                 onPress = {()=>searchClickFun(item)}>
                 <Image style={styles.searchImg} source = {{uri:item.backdrop_path}} />
-                <Text style = {styles.searchTitle}>{item.media_type.toUpperCase()}({item.date})</Text>
+                <Text style = {styles.searchTitle}>{media}({item.date})</Text>
                 <Text style = {styles.searchName}>{item.name}</Text>
                 <Text style = {[styles.SearchRed]}>★</Text>
                 <Text style = {[styles.vote]}>{item.vote_average}</Text>
