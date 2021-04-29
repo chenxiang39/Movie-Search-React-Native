@@ -2,11 +2,15 @@ import * as React from 'react';
 import {useLayoutEffect, useState, useEffect,useCallback} from 'react';
 import { View, Text, StyleSheet,Dimensions,Image, ScrollView,TouchableOpacity} from 'react-native';
 import watchlistLocalStorage from '../localStorage/watchlist';
+import {AutoDragSortableView} from 'react-native-drag-sort'
 import { useFocusEffect } from '@react-navigation/native';
 import {ContextMenuView} from "react-native-ios-context-menu"
 import Ionicons from 'react-native-vector-icons/Ionicons'
 global.deviceWidth = Dimensions.get('window').width
 global.deviceHeight = Dimensions.get('window').height
+const childrenWidth = (deviceWidth - 20 - 6 * 2) / 3
+const childrenHeight = 180
+const margin = 4;
 export default  watchlist = ({navigation, route}) => {
     const [loading,Setloading] = useState(false);
     const [watchlistData, SetwatchlistData] = useState([]);
@@ -39,7 +43,7 @@ export default  watchlist = ({navigation, route}) => {
          headerShown:false
       });
     }, [navigation]); 
-    const itemClickFun = (item) =>{
+    const itemClickFun = (data,item,index) =>{
         if(canClick){
             navigation.navigate('Details',{
               screen: 'detail',
@@ -68,55 +72,61 @@ export default  watchlist = ({navigation, route}) => {
     }
     const isInIcon = Image.resolveAssetSource(Ionicons.getImageSourceSync('bookmark',60,'black'));
     const notInIcon = Image.resolveAssetSource(Ionicons.getImageSourceSync('bookmark-outline',60,'black'));
-    const renderItem = () =>{
-        let arr = [];
-        for(let i = 0; i < watchlistData.length; i++){
-           let cur = (
-             <View style = {styles.itemContainer} key = {watchlistData[i].id + watchlistData[i].type}>
-                  <ContextMenuView
-                    lazyPreview = {false}
-                    onMenuWillShow = {()=> disableClick()}
-                    onMenuWillHide = {()=> enableClick()}
-                    // onMenuDidShow = {()=>updatelocalData(item)}
-                    onPressMenuItem={({nativeEvent})=>contentMenuBtnFun(nativeEvent,watchlistData[i],i)}
-                    previewConfig={{
-                        backgroundColor: 'white',
-                        borderRadius:0,
-                    }}
-                    menuConfig={{
-                        menuTitle: '',
-                        menuItems: [{
-                        actionKey  : 'local',
-                        actionTitle: isLocalData[i]?'Remove from watchList':'Add to watchList',
-                        icon: {
-                            iconType : 'REQUIRE',
-                            iconValue: isLocalData[i]?isInIcon:notInIcon
-                        }
-                        }],
-                    }}
-                    >
-                 <TouchableOpacity onPress = {()=>itemClickFun(watchlistData[i])}>
-                    <Image style ={styles.Img} source={{uri:watchlistData[i].url}}/>
-                 </TouchableOpacity>
-                 </ContextMenuView>
-                 <View style={styles.space}></View>
+
+    const renderItem =(item,i) =>{
+        return (
+            <View style = {styles.itemContainer}>
+                <ContextMenuView
+                  lazyPreview = {false}
+                  onMenuWillShow = {()=> disableClick()}
+                  onMenuWillHide = {()=> enableClick()}
+                  // onMenuDidShow = {()=>updatelocalData(item)}
+                  onPressMenuItem={({nativeEvent})=>contentMenuBtnFun(nativeEvent,watchlistData[i],i)}
+                  previewConfig={{
+                      backgroundColor: 'white',
+                      borderRadius:0,
+                  }}
+                  menuConfig={{
+                      menuTitle: '',
+                      menuItems: [{
+                      actionKey  : 'local',
+                      actionTitle: isLocalData[i]?'Remove from watchList':'Add to watchList',
+                      icon: {
+                          iconType : 'REQUIRE',
+                          iconValue: isLocalData[i]?isInIcon:notInIcon
+                      }
+                      }],
+                  }}
+                  >
+                  <Image style ={styles.Img} source={{uri:watchlistData[i].url}}/>
+                </ContextMenuView>
              </View>
-            
-           )
-           arr.push(cur);
-        }
-        return arr;
+        )
+    }
+    const dataChangeFun = async (data) =>{
+        await watchlistLocalStorage.saveNewArr(data);
+        await fetchData();
+        Setloading(true);
     }
     const renderWatchList = () =>{
        if(watchlistData.length !== 0){
           return (
             <View style = {styles.foundContainer}>
                 <Text style = {styles.title}>Watchlist</Text>
-                <ScrollView>
-                    <View style = {styles.foundScrollContainer}>
-                      {renderItem()}
-                    </View>
-                </ScrollView>
+                <AutoDragSortableView
+                    dataSource = {watchlistData}
+                    childrenHeight = {childrenHeight}
+                    childrenWidth = {childrenWidth}
+                    marginChildrenBottom={margin}
+                    marginChildrenRight={margin}
+                    marginChildrenLeft = {margin}
+                    marginChildrenTop = {margin}
+                    maxScale={1}
+                    onDataChange={dataChangeFun}
+                    keyExtractor={(item,index)=> item.id + item.type}
+                    renderItem={renderItem}
+                    onClickItem={itemClickFun}
+                />
             </View>
           )
        }
@@ -139,7 +149,7 @@ export default  watchlist = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
   container:{
-    height:'100%',
+      flex:1,
     paddingLeft:10,
     paddingRight:10,
     paddingTop:120,
@@ -154,7 +164,7 @@ const styles = StyleSheet.create({
   itemContainer:{
     display:'flex',
     flexDirection:'row',
-    marginTop:4
+    
   },
   notFoundcontainer:{
     display:'flex',
@@ -170,7 +180,8 @@ const styles = StyleSheet.create({
   },
   foundContainer:{
       display:'flex',
-      flexDirection:'column'
+      flexDirection:'column',
+      flex:1
   },
   title:{
     fontSize:30,
@@ -178,11 +189,7 @@ const styles = StyleSheet.create({
     fontWeight:'bold'
   },
   Img:{
-    height:180,
-    width: (deviceWidth - 20 - 6 * 2) / 3
+    height:childrenHeight,
+    width: childrenWidth
   },
-  space:{
-    width:4,
-    height:180,
-  }
 })

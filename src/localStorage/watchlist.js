@@ -166,6 +166,18 @@ const loadItem = async () =>{
         return curArr;
     }
 }
+const saveNewArr = async (dataArr) =>{
+    try{
+        await clearAllItem();
+        storage.save({
+            key:'watchlist',
+            data: JSONTransfer('save',dataArr)
+        })
+        return;
+    }catch(e){
+        return;
+    }
+}
 export default watchlistLocalStorage = {
     checkContainItem : checkContainItem,
     checkContainItemArr : checkContainItemArr,
@@ -173,5 +185,6 @@ export default watchlistLocalStorage = {
     moveItemTo:moveItemTo,
     clearAllItem : clearAllItem,
     clearItem:clearItem,
-    loadItem:loadItem
+    loadItem:loadItem,
+    saveNewArr:saveNewArr
 }
