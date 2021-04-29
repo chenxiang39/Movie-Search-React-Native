@@ -1,5 +1,5 @@
 # 571HW9
-Must install Nodejs and yarn!!!!!!
+Must install Nodejs, yarn and Homebrew!!!!!!
 
 [React Native Environment Setup](https://reactnative.dev/docs/environment-setup)
 
