@@ -16,6 +16,7 @@ export default  watchlist = ({navigation, route}) => {
     const [watchlistData, SetwatchlistData] = useState([]);
     const [isLocalData, SetisLocalData] = useState([]);
     const [canClick, SetcanClick] = useState(true);
+
     useFocusEffect(
       useCallback(() => {
         fetchData();
@@ -114,6 +115,7 @@ export default  watchlist = ({navigation, route}) => {
             <View style = {styles.foundContainer}>
                 <Text style = {styles.title}>Watchlist</Text>
                 <AutoDragSortableView
+                    delayLongPress = {100}
                     dataSource = {watchlistData}
                     childrenHeight = {childrenHeight}
                     childrenWidth = {childrenWidth}
