@@ -25,6 +25,8 @@ https://github.com/oblador/react-native-vector-icons/issues/1074
 
 when install vector-icons
 
+please remove duplicate reference fonts in "Copy Bundle Resources" 
+
 https://github.com/dominicstop/react-native-ios-context-menu#112-xcode-build-error-undefined-symbol
 
 build failed
