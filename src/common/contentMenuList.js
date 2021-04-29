@@ -20,21 +20,23 @@ export default contentMenuList = (props) => {
     useFocusEffect(
         useCallback(() => {
           updateLocalData();
+          SetloadFlag(true);
           return () => {
             
           };
         }, [])
     );
     useEffect(async()=>{
+        SetloadFlag(false);
         try{
             let data = await watchlistLocalStorage.checkContainItemArr(watchlistDataModel(props.data));
             SetisLocalData(data);
-            SetloadFlag(true);
         }catch(e){
             alert(e)
         }
     },[loadFlag,canClick])
     const updateLocalData = async () =>{
+        SetloadFlag(false);
         let data = await watchlistLocalStorage.checkContainItemArr(watchlistDataModel(props.data));
         SetisLocalData(data);
         SetloadFlag(true);
@@ -55,6 +57,7 @@ export default contentMenuList = (props) => {
     const contentMenuBtnFun = async (e,item,index) =>{
         switch (e.actionKey) {
             case 'local':
+                SetloadFlag(false);
                 if(!isLocalData[index]){
                     await watchlistLocalStorage.addItemToTail(item.id,item.type,item.poster_path);
                     let notice = item.title + ' was added to Watchlist' 
@@ -65,7 +68,7 @@ export default contentMenuList = (props) => {
                     let notice = item.title + ' was removed from Watchlist' 
                     Toast.show(ToastCustomShow(notice));
                 }
-                SetloadFlag(flag => !flag);
+                SetloadFlag(true);
                 break;
 
             case 'facebook':
@@ -143,17 +146,24 @@ export default contentMenuList = (props) => {
             </View>
         )
     }
-        return (
-            <View>     
-                <FlatList
-                    data = {props.data}
-                    renderItem = {renderItemMovieOrTV}
-                    keyExtractor = {item => item.id}
-                    horizontal={true}
-                >
-                </FlatList>
-            </View>
-        )
+        if(!loadFlag){
+            return (
+                <View>     
+                    <FlatList
+                        data = {props.data}
+                        renderItem = {renderItemMovieOrTV}
+                        keyExtractor = {item => item.id}
+                        horizontal={true}
+                    >
+                    </FlatList>
+                </View>
+            )
+        }
+        else{
+            return (
+                <View></View>
+            )
+        }
 }
 
 const styles = StyleSheet.create({
