@@ -6,17 +6,19 @@ import { useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import {Dimensions} from 'react-native';
 import {ContextMenuView} from "react-native-ios-context-menu"
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import Entypo from 'react-native-vector-icons/Entypo'
-import Ionicons from 'react-native-vector-icons/Ionicons'
 import {watchlistDataModel} from '../dataModel/Watchlist'
 import {ToastCustomShow} from '../common/toastCustom'
+import {getIcon} from '../common/icon'
 global.deviceWidth = Dimensions.get('window').width
 global.deviceHeight = Dimensions.get('window').height
 export default contentMenuList = (props) => {
     const [isLocalData, SetisLocalData] = useState([]);
     const [loadFlag, SetloadFlag] = useState(false);
     const [canClick, SetcanClick] = useState(true);
+    const facebookIcon = getIcon().facebookIcon;
+    const twitterIcon = getIcon().twitterIcon;
+    const isInIcon = getIcon().isInIcon;
+    const notInIcon = getIcon().notInIcon;
     useFocusEffect(
         useCallback(() => {
           updateLocalData();
@@ -41,8 +43,6 @@ export default contentMenuList = (props) => {
         SetisLocalData(data);
         SetloadFlag(true);
     }
-    const facebookIcon = Image.resolveAssetSource(FontAwesome.getImageSourceSync('facebook-f',60,'black'));
-    const twitterIcon = Image.resolveAssetSource(Entypo.getImageSourceSync('twitter',60,'black'));
     const ClickFun = (item) =>{
         if(canClick){
             props.navigation.navigate('Details',{
@@ -93,8 +93,6 @@ export default contentMenuList = (props) => {
     const enableClick = () =>{
         SetcanClick(true);
     }
-    const isInIcon = Image.resolveAssetSource(Ionicons.getImageSourceSync('bookmark',60,'black'));
-    const notInIcon = Image.resolveAssetSource(Ionicons.getImageSourceSync('bookmark-outline',60,'black'));
     const renderItemMovieOrTV = ({item,index}) =>{
         return (
             <View style = {styles.container}>

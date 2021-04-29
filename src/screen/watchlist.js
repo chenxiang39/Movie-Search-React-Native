@@ -5,7 +5,7 @@ import watchlistLocalStorage from '../localStorage/watchlist';
 import {AutoDragSortableView} from 'react-native-drag-sort'
 import { useFocusEffect } from '@react-navigation/native';
 import {ContextMenuView} from "react-native-ios-context-menu"
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import {getIcon} from '../common/icon'
 global.deviceWidth = Dimensions.get('window').width
 global.deviceHeight = Dimensions.get('window').height
 const childrenWidth = (deviceWidth - 20 - 6 * 2) / 3
@@ -16,7 +16,8 @@ export default  watchlist = ({navigation, route}) => {
     const [watchlistData, SetwatchlistData] = useState([]);
     const [isLocalData, SetisLocalData] = useState([]);
     const [canClick, SetcanClick] = useState(true);
-
+    const isInIcon = getIcon().isInIcon;
+    const notInIcon = getIcon().notInIcon;
     useFocusEffect(
       useCallback(() => {
         fetchData();
@@ -71,9 +72,6 @@ export default  watchlist = ({navigation, route}) => {
     const enableClick = () =>{
         SetcanClick(true);
     }
-    const isInIcon = Image.resolveAssetSource(Ionicons.getImageSourceSync('bookmark',60,'black'));
-    const notInIcon = Image.resolveAssetSource(Ionicons.getImageSourceSync('bookmark-outline',60,'black'));
-
     const renderItem =(item,i) =>{
         return (
             <View style = {styles.itemContainer}>

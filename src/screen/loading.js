@@ -4,6 +4,7 @@ import { useRef,useLayoutEffect, useState, useEffect} from 'react';
 import {tvTopCarousel, movieTopCarousel} from '../dataModel/TopCarousel'
 import {tvHorizonlist, movieHorizonlist} from '../dataModel/Horizonlist'
 import Loading from '../common/loading'
+import {loadIcon} from '../common/icon'
 import {ip} from '../IpAddress.json'
 export default  loading = ({navigation,route}) => {
     const [loading, Setloading] = useState(true);
@@ -27,6 +28,7 @@ export default  loading = ({navigation,route}) => {
         const tvtopListData = await res.json();
         res = await fetch(ip.node + "/gets/popular_tv");
         const tvpopListData = await res.json();
+        await loadIcon();
         navigation.replace('USC Films',{
             movtopCarouselData:movieTopCarousel(currently_playing_Data),
             movtopRateData:movieHorizonlist(mtopListData),
