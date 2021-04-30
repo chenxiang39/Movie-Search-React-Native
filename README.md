@@ -1,4 +1,4 @@
-# 571HW9
+# Movie-search application built with React Native
 Must install Nodejs, yarn and Homebrew!!!!!!
 
 [React Native Environment Setup](https://reactnative.dev/docs/environment-setup)
