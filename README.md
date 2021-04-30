@@ -14,11 +14,11 @@ npx pod-install
 
 ```
 
-### run
+### run (Main plateform is IOS)
 
 ```bash
 npx react-native run-ios --simulator="iPhone 12 Pro"
-npx react-native run-android
+
 ```
 
 
