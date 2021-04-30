@@ -1,4 +1,7 @@
-# Movie-search application built with React Native
+# Movie-Search-APP
+
+Use React-Native
+
 Must install Nodejs, yarn and Homebrew!!!!!!
 
 [React Native Environment Setup](https://reactnative.dev/docs/environment-setup)
@@ -15,7 +18,7 @@ npx pod-install
 
 ```bash
 npx react-native run-ios --simulator="iPhone 12 Pro"
-
+npx react-native run-android
 ```
 
 
