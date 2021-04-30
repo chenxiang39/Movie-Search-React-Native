@@ -21,6 +21,7 @@ export default  watchlist = ({navigation, route}) => {
     useFocusEffect(
       useCallback(() => {
         fetchData();
+        SetcanClick(true);
         return () => {
           Setloading(false);
         };
@@ -29,7 +30,7 @@ export default  watchlist = ({navigation, route}) => {
     useEffect(async ()=>{
       await fetchData();
       Setloading(true);
-    },[loading])
+    },[loading,canClick])
 
     const fetchData = async () =>{
       let data = await watchlistLocalStorage.loadItem();
@@ -68,6 +69,7 @@ export default  watchlist = ({navigation, route}) => {
                 
     const disableClick = () =>{
         SetcanClick(false);
+      
     }
     const enableClick = () =>{
         SetcanClick(true);
@@ -79,7 +81,6 @@ export default  watchlist = ({navigation, route}) => {
                   lazyPreview = {false}
                   onMenuWillShow = {()=> disableClick()}
                   onMenuWillHide = {()=> enableClick()}
-                  // onMenuDidShow = {()=>updatelocalData(item)}
                   onPressMenuItem={({nativeEvent})=>contentMenuBtnFun(nativeEvent,watchlistData[i],i)}
                   previewConfig={{
                       backgroundColor: 'white',
