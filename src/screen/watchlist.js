@@ -114,7 +114,7 @@ export default  watchlist = ({navigation, route}) => {
             <View style = {styles.foundContainer}>
                 <Text style = {styles.title}>Watchlist</Text>
                 <AutoDragSortableView
-                    delayLongPress = {100}
+                    delayLongPress = {200}
                     dataSource = {watchlistData}
                     childrenHeight = {childrenHeight}
                     childrenWidth = {childrenWidth}
